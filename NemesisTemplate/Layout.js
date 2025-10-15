@@ -1,0 +1,152 @@
+
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { Car, Phone, Mail, MapPin } from "lucide-react";
+
+export default function Layout({ children, currentPageName }) {
+  const location = useLocation();
+
+  const navigation = [
+    { name: "Home", href: createPageUrl("Home") },
+    { name: "Inventory", href: createPageUrl("Inventory") },
+    { name: "About", href: createPageUrl("About") },
+    { name: "Contact", href: createPageUrl("Contact") }
+  ];
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <style>{`
+        :root {
+          --neon-blue: #00f5ff;
+          --neon-green: #39ff14;
+          --electric-orange: #ff6b00;
+          --deep-black: #0a0a0a;
+          --charcoal: #1a1a1a;
+        }
+        
+        .neon-glow {
+          box-shadow: 0 0 20px var(--neon-blue);
+        }
+        
+        .gradient-text {
+          background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        
+        .car-card:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 25px 50px rgba(0, 245, 255, 0.3);
+        }
+      `}</style>
+
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <Link to={createPageUrl("Home")} className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-green-400 rounded-lg flex items-center justify-center">
+                <Car className="w-6 h-6 text-black" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold gradient-text">NEMESIS</h1>
+                <p className="text-xs text-gray-400 -mt-1">IMPORTS</p>
+              </div>
+            </Link>
+
+            {/* Navigation Links */}
+            <div className="hidden md:flex space-x-8">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors duration-200 hover:text-blue-400 ${
+                    location.pathname === item.href 
+                      ? 'text-blue-400' 
+                      : 'text-gray-300'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* Contact Info */}
+            <div className="hidden lg:flex items-center space-x-6 text-sm text-gray-400">
+              <div className="flex items-center space-x-2">
+                <Phone className="w-4 h-4" />
+                <span>+1 (555) 123-4567</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="pt-20">
+        {children}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-green-400 rounded-lg flex items-center justify-center">
+                  <Car className="w-5 h-5 text-black" />
+                </div>
+                <span className="text-xl font-bold gradient-text">NEMESIS IMPORTS</span>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Founded by Marine veteran Cason Pewitt, specializing in premium 
+                JDM imports from Japan. Bringing authentic Japanese car culture 
+                to Middle Tennessee and beyond.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-white font-semibold mb-4">Quick Links</h3>
+              <div className="space-y-2">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="block text-gray-400 hover:text-blue-400 transition-colors text-sm"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-white font-semibold mb-4">Contact</h3>
+              <div className="space-y-3 text-sm text-gray-400">
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4" />
+                  <span>+1 (555) 123-4567</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4" />
+                  <span>info@nemesisimports.com</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>Franklin, TN</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2024 Nemesis Imports. All rights reserved. Founded by Cason Pewitt.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
