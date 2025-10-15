@@ -1,0 +1,92 @@
+{
+  "name": "Car",
+  "type": "object",
+  "properties": {
+    "make": {
+      "type": "string",
+      "description": "Car manufacturer (e.g., Toyota, Honda, Nissan)"
+    },
+    "model": {
+      "type": "string",
+      "description": "Car model name"
+    },
+    "year": {
+      "type": "integer",
+      "description": "Year of manufacture"
+    },
+    "engine": {
+      "type": "string",
+      "description": "Engine specifications"
+    },
+    "transmission": {
+      "type": "string",
+      "enum": [
+        "Manual",
+        "Automatic"
+      ],
+      "description": "Transmission type"
+    },
+    "mileage": {
+      "type": "number",
+      "description": "Mileage in kilometers"
+    },
+    "price": {
+      "type": "number",
+      "description": "Price in USD"
+    },
+    "color": {
+      "type": "string",
+      "description": "Exterior color"
+    },
+    "condition": {
+      "type": "string",
+      "enum": [
+        "Excellent",
+        "Very Good",
+        "Good",
+        "Fair"
+      ],
+      "default": "Excellent",
+      "description": "Overall condition"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the car"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Special features and modifications"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of image URLs"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this car should be featured on homepage"
+    },
+    "is_sold": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this car has been sold"
+    },
+    "import_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when car was imported"
+    }
+  },
+  "required": [
+    "make",
+    "model",
+    "year",
+    "price"
+  ]
+}
