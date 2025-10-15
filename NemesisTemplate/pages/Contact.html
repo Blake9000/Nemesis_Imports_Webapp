@@ -1,0 +1,157 @@
+
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { motion } from "framer-motion";
+
+export default function Contact() {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    transition: { duration: 0.8 }
+  };
+
+  return (
+    <div className="bg-black text-white min-h-screen">
+      {/* Header */}
+      <section className="py-20 bg-gradient-to-r from-gray-900 to-black">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div {...fadeInUp}>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              GET IN <span className="gradient-text">TOUCH</span>
+            </h1>
+            <p className="text-xl text-gray-300 leading-relaxed">
+              Ready to find your dream JDM machine? Our team is here to help.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="grid lg:grid-cols-2 gap-16">
+          {/* Contact Form */}
+          <motion.div {...fadeInUp}>
+            <h2 className="text-3xl font-bold mb-8">Send us a message</h2>
+            <form className="space-y-6">
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">First Name</label>
+                  <Input 
+                    placeholder="Your first name"
+                    className="bg-gray-800 border-gray-600 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Last Name</label>
+                  <Input 
+                    placeholder="Your last name"
+                    className="bg-gray-800 border-gray-600 text-white"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Email</label>
+                <Input 
+                  type="email"
+                  placeholder="your.email@example.com"
+                  className="bg-gray-800 border-gray-600 text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Phone</label>
+                <Input 
+                  type="tel"
+                  placeholder="Your phone number"
+                  className="bg-gray-800 border-gray-600 text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Interested Vehicle</label>
+                <Input 
+                  placeholder="e.g., 1995 Toyota Supra RZ"
+                  className="bg-gray-800 border-gray-600 text-white"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Message</label>
+                <Textarea 
+                  placeholder="Tell us about your dream JDM car or any questions you have..."
+                  rows={6}
+                  className="bg-gray-800 border-gray-600 text-white"
+                />
+              </div>
+              
+              <Button size="lg" className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-black font-semibold py-4 text-lg">
+                SEND MESSAGE
+              </Button>
+            </form>
+          </motion.div>
+
+          {/* Contact Info */}
+          <motion.div 
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl font-bold mb-8">Contact Information</h2>
+            
+            <div className="space-y-8">
+              {[
+                {
+                  icon: Phone,
+                  title: "Phone",
+                  details: ["+1 (555) 123-4567", "Monday - Friday: 9AM - 6PM CST"]
+                },
+                {
+                  icon: Mail,
+                  title: "Email",
+                  details: ["info@nemesisimports.com", "cason@nemesisimports.com"]
+                },
+                {
+                  icon: MapPin,
+                  title: "Location",
+                  details: ["Franklin, Tennessee", "Serving Middle Tennessee & Beyond"]
+                },
+                {
+                  icon: Clock,
+                  title: "Business Hours",
+                  details: ["Monday - Friday: 9AM - 6PM", "Saturday: 10AM - 4PM", "Sunday: By Appointment"]
+                }
+              ].map((contact, index) => (
+                <div key={index} className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <contact.icon className="w-6 h-6 text-black" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">{contact.title}</h3>
+                    {contact.details.map((detail, i) => (
+                      <p key={i} className="text-gray-400">{detail}</p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 p-6 bg-gray-800 rounded-2xl">
+              <h3 className="text-xl font-bold mb-4">Schedule a Meeting</h3>
+              <p className="text-gray-400 mb-4">
+                As a Marine veteran with firsthand experience in Japan's car culture, 
+                Cason personally ensures every customer finds their perfect JDM machine. 
+                Schedule a time to discuss your automotive dreams.
+              </p>
+              <Button variant="outline" className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black">
+                SCHEDULE MEETING
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}

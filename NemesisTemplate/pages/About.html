@@ -1,0 +1,212 @@
+import React from "react";
+import { Shield, Award, Users, Globe } from "lucide-react";
+import { motion } from "framer-motion";
+
+export default function About() {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    transition: { duration: 0.8 }
+  };
+
+  return (
+    <div className="bg-black text-white">
+      {/* Hero Section */}
+      <section className="py-20 bg-gradient-to-r from-gray-900 to-black">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div {...fadeInUp}>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              OUR <span className="gradient-text">STORY</span>
+            </h1>
+            <p className="text-xl text-gray-300 leading-relaxed">
+              Founded by Marine veteran Cason Pewitt, bringing authentic JDM culture 
+              from Japan to Middle Tennessee and beyond.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Story */}
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div {...fadeInUp}>
+              <h2 className="text-4xl font-bold mb-6">
+                THE NEMESIS <span className="gradient-text">LEGACY</span>
+              </h2>
+              <div className="space-y-6 text-gray-300 leading-relaxed">
+                <p>
+                  Nemesis Imports was founded in 2025 by Cason Pewitt, a United States 
+                  Marine Corps veteran with a deep passion for motorsports and Japanese 
+                  automotive culture. After serving overseas in Japan, stationed in the 
+                  smaller city of Iwakuni in Yamaguchi prefecture, Cason discovered the 
+                  incredible world of JDM performance and community.
+                </p>
+                <p>
+                  During his time in Japan, Cason developed meaningful relationships with 
+                  local car enthusiasts, people deeply connected to FDJ (Formula Drift Japan), 
+                  and performance shops that were bringing the absolute best out of these 
+                  iconic vehicles. This immersion into authentic Japanese car culture opened 
+                  his eyes to the engineering prestige and racing heritage that defines JDM.
+                </p>
+                <p>
+                  Based in Franklin, Tennessee, Nemesis Imports was created to bring the 
+                  growing Middle Tennessee and surrounding areas a trustworthy source for 
+                  all things JDM. Our mission is to stand above other import companies by 
+                  making these newly US-legal cars easily accessible to anyone drawn to 
+                  these iconic vehicles and the community that surrounds them.
+                </p>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <div className="aspect-square bg-gradient-to-br from-blue-600 to-green-600 rounded-2xl p-8 flex items-center justify-center">
+                <div className="text-center text-black">
+                  <div className="text-6xl font-bold mb-4">2025</div>
+                  <div className="text-xl font-semibold">Founded in Franklin, TN</div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission */}
+      <section className="py-20 bg-gray-900">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div {...fadeInUp} className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-6">
+              OUR <span className="gradient-text">MISSION</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
+              The JDM community is incredibly diverse - ranging from wealthy collectors 
+              with limited edition models all the way to grassroots drifting enthusiasts. 
+              We want to bring that wide range of appreciation to this area of the United States.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: Shield,
+                title: "Military Values",
+                description: "Built on the foundation of honor, integrity, and service from Marine Corps experience."
+              },
+              {
+                icon: Award,
+                title: "Authentic JDM",
+                description: "Real connections with Japan's car culture, not just imported vehicles."
+              },
+              {
+                icon: Users,
+                title: "Community First",
+                description: "Serving everyone from collectors to grassroots enthusiasts with equal passion."
+              },
+              {
+                icon: Globe,
+                title: "Tennessee Roots",
+                description: "Bringing Japanese automotive excellence to Middle Tennessee and beyond."
+              }
+            ].map((value, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <value.icon className="w-8 h-8 text-black" />
+                </div>
+                <h3 className="text-xl font-bold mb-4">{value.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{value.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Japan Experience */}
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div {...fadeInUp} className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-6">
+              IWAKUNI <span className="gradient-text">CONNECTION</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              The relationships and knowledge gained during military service in Japan 
+              form the foundation of everything we do.
+            </p>
+          </motion.div>
+
+          <div className="space-y-16">
+            {[
+              {
+                title: "Local Enthusiasts",
+                description: "Built genuine relationships with Japanese car enthusiasts who live and breathe JDM culture every day. These connections provide insider knowledge and access to the best vehicles."
+              },
+              {
+                title: "Formula Drift Japan",
+                description: "Through connections with people deeply tied to FDJ, we understand the performance capabilities and modifications that make these cars legendary on the track."
+              },
+              {
+                title: "Performance Shops",
+                description: "Partnerships with Japanese performance shops ensure we understand the full potential of each vehicle and can guide customers toward the perfect build."
+              },
+              {
+                title: "Cultural Understanding",
+                description: "Living in Iwakuni provided deep insight into the respect and care Japanese owners have for their vehicles - a standard we bring to every import."
+              }
+            ].map((experience, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+                className={`flex items-center gap-12 ${index % 2 === 1 ? 'flex-row-reverse' : ''}`}
+              >
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold mb-4">{experience.title}</h3>
+                  <p className="text-gray-400 leading-relaxed text-lg">{experience.description}</p>
+                </div>
+                <div className="flex-1">
+                  <div className="aspect-video bg-gradient-to-br from-blue-600 to-green-600 rounded-2xl flex items-center justify-center">
+                    <div className="text-4xl font-bold text-black">{String(index + 1).padStart(2, '0')}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Founder Message */}
+      <section className="py-20 bg-gray-900">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.div {...fadeInUp}>
+            <div className="mb-8">
+              <div className="w-24 h-24 bg-gradient-to-r from-blue-500 to-green-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <span className="text-3xl font-bold text-black">CP</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Cason Pewitt</h3>
+              <p className="text-gray-400">Founder & Marine Veteran</p>
+            </div>
+            
+            <blockquote className="text-xl italic text-gray-300 leading-relaxed">
+              "My goal is simple: to make the incredible world of JDM accessible to 
+              everyone who feels that same passion I discovered in Japan. Whether you're 
+              a collector seeking a pristine example or an enthusiast ready to build 
+              your dream drift car, Nemesis Imports is here to connect you with the 
+              vehicle and community you're looking for."
+            </blockquote>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}

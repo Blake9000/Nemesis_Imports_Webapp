@@ -1,0 +1,244 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { Car } from "@/entities/Car";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Car as CarIcon, Search, Filter } from "lucide-react";
+import { motion } from "framer-motion";
+
+export default function Inventory() {
+  const [cars, setCars] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedMake, setSelectedMake] = useState("all");
+  const [selectedDecade, setSelectedDecade] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+
+  useEffect(() => {
+    loadCars();
+  }, []);
+
+  useEffect(() => {
+    filterAndSortCars();
+  }, [cars, searchTerm, selectedMake, selectedDecade, sortBy]);
+
+  const loadCars = async () => {
+    try {
+      const allCars = await Car.filter({ is_sold: false }, "-created_date", 50);
+      setCars(allCars);
+    } catch (error) {
+      console.error("Error loading cars:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const filterAndSortCars = () => {
+    let filtered = [...cars];
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(car => 
+        `${car.year} ${car.make} ${car.model}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        car.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Make filter
+    if (selectedMake !== "all") {
+      filtered = filtered.filter(car => car.make === selectedMake);
+    }
+
+    // Decade filter
+    if (selectedDecade !== "all") {
+      const decade = parseInt(selectedDecade);
+      filtered = filtered.filter(car => car.year >= decade && car.year < decade + 10);
+    }
+
+    // Sort
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "price-low":
+          return (a.price || 0) - (b.price || 0);
+        case "price-high":
+          return (b.price || 0) - (a.price || 0);
+        case "year-old":
+          return a.year - b.year;
+        case "year-new":
+          return b.year - a.year;
+        default: // newest
+          return new Date(b.created_date) - new Date(a.created_date);
+      }
+    });
+
+    setFilteredCars(filtered);
+  };
+
+  const getUniqueMakes = () => {
+    const makes = [...new Set(cars.map(car => car.make))].sort();
+    return makes;
+  };
+
+  return (
+    <div className="bg-black text-white min-h-screen">
+      {/* Header */}
+      <section className="py-16 bg-gradient-to-r from-gray-900 to-black">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              OUR <span className="gradient-text">INVENTORY</span>
+            </h1>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Discover legendary JDM machines from Japan's golden era
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Filters */}
+      <section className="py-8 bg-gray-900 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-wrap gap-4 items-center justify-between">
+            <div className="flex flex-wrap gap-4 flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="Search cars..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 bg-gray-800 border-gray-600 text-white w-64"
+                />
+              </div>
+              
+              <Select value={selectedMake} onValueChange={setSelectedMake}>
+                <SelectTrigger className="w-40 bg-gray-800 border-gray-600 text-white">
+                  <SelectValue placeholder="Make" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Makes</SelectItem>
+                  {getUniqueMakes().map(make => (
+                    <SelectItem key={make} value={make}>{make}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={selectedDecade} onValueChange={setSelectedDecade}>
+                <SelectTrigger className="w-40 bg-gray-800 border-gray-600 text-white">
+                  <SelectValue placeholder="Decade" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Years</SelectItem>
+                  <SelectItem value="1970">1970s</SelectItem>
+                  <SelectItem value="1980">1980s</SelectItem>
+                  <SelectItem value="1990">1990s</SelectItem>
+                  <SelectItem value="2000">2000s</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-48 bg-gray-800 border-gray-600 text-white">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest Listed</SelectItem>
+                <SelectItem value="price-low">Price: Low to High</SelectItem>
+                <SelectItem value="price-high">Price: High to Low</SelectItem>
+                <SelectItem value="year-new">Year: Newest First</SelectItem>
+                <SelectItem value="year-old">Year: Oldest First</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </section>
+
+      {/* Results */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex justify-between items-center mb-8">
+            <p className="text-gray-400">
+              Showing {filteredCars.length} of {cars.length} vehicles
+            </p>
+          </div>
+
+          {isLoading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="bg-gray-800 rounded-2xl h-96 animate-pulse" />
+              ))}
+            </div>
+          ) : filteredCars.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredCars.map((car, index) => (
+                <motion.div
+                  key={car.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="car-card bg-gray-800 rounded-2xl overflow-hidden transition-all duration-500"
+                >
+                  <div className="aspect-video bg-gray-700 relative overflow-hidden">
+                    {car.images && car.images[0] ? (
+                      <img 
+                        src={car.images[0]} 
+                        alt={`${car.year} ${car.make} ${car.model}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
+                        <CarIcon className="w-16 h-16 text-white" />
+                      </div>
+                    )}
+                    <div className="absolute top-4 left-4 flex gap-2">
+                      <Badge className="bg-green-500 text-black font-semibold">
+                        {car.condition}
+                      </Badge>
+                      {car.is_featured && (
+                        <Badge className="bg-yellow-500 text-black font-semibold">
+                          Featured
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-bold mb-2">
+                      {car.year} {car.make} {car.model}
+                    </h3>
+                    <p className="text-gray-400 mb-4 line-clamp-2">
+                      {car.engine} • {car.transmission}
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-2xl font-bold text-green-400">
+                        ${car.price?.toLocaleString()}
+                      </span>
+                      <Link to={createPageUrl(`CarDetail?id=${car.id}`)}>
+                        <Button variant="outline" className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black">
+                          VIEW DETAILS
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <CarIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-semibold mb-2">No cars found</h3>
+              <p className="text-gray-400">Try adjusting your search criteria</p>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}

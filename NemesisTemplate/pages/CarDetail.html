@@ -1,0 +1,232 @@
+import React, { useState, useEffect } from "react";
+import { Car } from "@/entities/Car";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Calendar, Gauge, Cog, Palette, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { motion } from "framer-motion";
+
+export default function CarDetail() {
+  const [car, setCar] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadCar();
+  }, []);
+
+  const loadCar = async () => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const carId = urlParams.get('id');
+      
+      if (carId) {
+        const cars = await Car.filter({ id: carId }, "-created_date", 1);
+        if (cars.length > 0) {
+          setCar(cars[0]);
+        }
+      }
+    } catch (error) {
+      console.error("Error loading car:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="bg-black text-white min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400"></div>
+      </div>
+    );
+  }
+
+  if (!car) {
+    return (
+      <div className="bg-black text-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Car not found</h2>
+          <Button onClick={() => navigate(createPageUrl("Inventory"))}>
+            Back to Inventory
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const specs = [
+    { icon: Calendar, label: "Year", value: car.year },
+    { icon: Cog, label: "Engine", value: car.engine },
+    { icon: Gauge, label: "Mileage", value: `${car.mileage?.toLocaleString()} km` },
+    { icon: Palette, label: "Color", value: car.color }
+  ];
+
+  return (
+    <div className="bg-black text-white min-h-screen">
+      {/* Header */}
+      <div className="bg-gray-900 py-6">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center gap-4 mb-4">
+            <Button 
+              variant="outline" 
+              size="icon"
+              onClick={() => navigate(createPageUrl("Inventory"))}
+              className="border-gray-600 text-gray-400 hover:bg-gray-700"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div>
+              <h1 className="text-4xl font-bold">
+                {car.year} {car.make} {car.model}
+              </h1>
+              <div className="flex items-center gap-4 mt-2">
+                <Badge className="bg-green-500 text-black font-semibold">
+                  {car.condition}
+                </Badge>
+                {car.is_featured && (
+                  <Badge className="bg-yellow-500 text-black font-semibold">
+                    <Star className="w-3 h-3 mr-1" />
+                    Featured
+                  </Badge>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Images */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="space-y-4">
+              <div className="aspect-video bg-gray-800 rounded-2xl overflow-hidden">
+                {car.images && car.images.length > 0 ? (
+                  <img
+                    src={car.images[selectedImage]}
+                    alt={`${car.year} ${car.make} ${car.model}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span className="text-2xl font-bold">
+                          {car.make[0]}{car.model[0]}
+                        </span>
+                      </div>
+                      <p className="text-xl font-semibold">
+                        {car.year} {car.make} {car.model}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {car.images && car.images.length > 1 && (
+                <div className="grid grid-cols-4 gap-2">
+                  {car.images.slice(0, 4).map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`aspect-square bg-gray-800 rounded-lg overflow-hidden transition-all ${
+                        selectedImage === index 
+                          ? 'ring-2 ring-blue-400' 
+                          : 'hover:opacity-80'
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`View ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Details */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div className="space-y-8">
+              {/* Price */}
+              <div>
+                <div className="text-5xl font-bold text-green-400 mb-2">
+                  ${car.price?.toLocaleString()}
+                </div>
+                <p className="text-gray-400">
+                  Imported: {car.import_date ? new Date(car.import_date).toLocaleDateString() : 'Recently'}
+                </p>
+              </div>
+
+              {/* Specs */}
+              <div className="grid grid-cols-2 gap-6">
+                {specs.map((spec, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center">
+                      <spec.icon className="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-sm">{spec.label}</p>
+                      <p className="font-semibold">{spec.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Description */}
+              <div>
+                <h3 className="text-2xl font-bold mb-4">Description</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {car.description || "This exceptional JDM import represents the pinnacle of Japanese automotive engineering from the golden era."}
+                </p>
+              </div>
+
+              {/* Features */}
+              {car.features && car.features.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold mb-4">Features</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {car.features.map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span className="text-gray-300">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Contact */}
+              <div className="bg-gray-800 rounded-2xl p-6">
+                <h3 className="text-xl font-bold mb-4">Interested in this car?</h3>
+                <p className="text-gray-400 mb-6">
+                  Contact our team to schedule a viewing or get more information.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-black font-semibold flex-1">
+                    CALL NOW
+                  </Button>
+                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black flex-1">
+                    EMAIL US
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
