@@ -37,11 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tailwind',
-    'theme'
+    'core'
 ]
-
-TAILWIND_APP_NAME = 'theme'
 
 NPM_BIN_PATH = r"C:\Users\Admin\miniconda3\envs\django3\npm.cmd"
 
@@ -60,7 +57,7 @@ ROOT_URLCONF = 'Nemesis_Imports.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

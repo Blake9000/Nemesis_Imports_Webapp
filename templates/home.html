@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Home · Nemesis Imports{% endblock %}
+{% block content %}
+  <section class="py-5 bg-dark border-bottom border-secondary">
+    <div class="container text-center">
+      <h1 class="display-4 fw-bold mb-3">Authentic JDM Inventory</h1>
+      <p class="lead text-secondary mb-4">Discover legendary machines from Japan’s golden era.</p>
+      <a class="btn btn-primary btn-lg" href="{% url 'inventory' %}">Browse Inventory</a>
+    </div>
+  </section>
+  <section class="py-5">
+    <div class="container">
+      <h2 class="h3 mb-3">Featured</h2>
+      <p class="text-secondary">Add cards here or pull from your queryset later.</p>
+    </div>
+  </section>
+{% endblock %}
