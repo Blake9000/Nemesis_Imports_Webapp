@@ -23,7 +23,7 @@
       <div class="col-lg-6">
         <div class="ratio ratio-16x9 bg-secondary rounded overflow-hidden mb-3">
           {% if car.images %}
-            <img src="{{ car.images|first }}" class="w-100 h-100 object-fit-cover" alt="">
+            <img src="{{ car.images }}" class="w-100 h-100 object-fit-cover" alt="">
           {% endif %}
         </div>
         {% if car.images and car.images|length > 1 %}
@@ -60,7 +60,7 @@
           <div class="col">
             <div class="d-flex align-items-center gap-2">
               <i class="bi bi-speedometer2 text-primary"></i>
-              <div><div class="text-secondary small">Mileage</div><div class="fw-semibold">{{ car.mileage|intcomma }} km</div></div>
+              <div><div class="text-secondary small">Mileage</div><div class="fw-semibold">{{ car.mileage }} km</div></div>
             </div>
           </div>
           <div class="col">
