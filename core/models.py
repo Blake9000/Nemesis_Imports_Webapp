@@ -37,4 +37,4 @@ class CarImage(models.Model):
     caption = models.TextField(max_length=200,blank=True, null=True)
 
     def __str__(self):
-        return f"Image for {self.car.name}"
+        return f"Image for {self.car.make} {self.car.model}"
