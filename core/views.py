@@ -23,3 +23,6 @@ def contact(request):
         # handle form submit later
         pass
     return render(request, "contact.html")
+
+def management(request):
+    return render(request, "management.html")

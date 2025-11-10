@@ -1,7 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>{% block title %}Nemesis Imports{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,92 +10,113 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     {% block head %}{% endblock %}
-  </head>
-  <body class="bg-black text-white">
+</head>
+<body class="bg-black text-white">
 
-    <!-- Navbar -->
+{% block navbar %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary fixed-top">
-      <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
           <span class="d-inline-flex align-items-center justify-content-center rounded me-2"
                 style="width:40px;height:40px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
             <i class="bi bi-car-front-fill text-black fs-5"></i>
           </span>
-          <span class="fw-bold">NEMESIS</span><small class="ms-1 text-secondary">IMPORTS</small>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="nav" class="collapse navbar-collapse">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'inventory' %}">Inventory</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-          </ul>
-          <div class="d-none d-lg-flex ms-3 text-secondary small">
-            <i class="bi bi-telephone me-2"></i> +1 (555) 123-4567
-          </div>
+                <span class="fw-bold">NEMESIS</span><small class="ms-1 text-secondary">IMPORTS</small>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="nav" class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inventory' %}">Inventory</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'management' %}">Management</a></li>
+                </ul>
+                <div class="d-none d-lg-flex ms-3 text-secondary small ">
+                    <i class="bi bi-telephone me-2"></i> +1 (555) 123-4567
+                </div>
+
+                <div class="dropdown ms-3">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                       id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png"  width="30" height="30"
+                             class="rounded-circle">
+                        <span class="d-none d-sm-inline mx-1">Temp</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
-      </div>
+        </div>
     </nav>
+{% endblock %}
 
-    <main class="pt-5" style="padding-top:6rem;">
-      <div class="container">
+<main class="pt-5" style="padding-top:6rem;">
+    <div class="container">
         {% if messages %}
-          <div class="mt-2">
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags|default:'secondary' }} mb-2" role="alert">
-                {{ message }}
-              </div>
-            {% endfor %}
-          </div>
+            <div class="mt-2">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'secondary' }} mb-2" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
-      </div>
-      {% block content %}{% endblock %}
-    </main>
+    </div>
+    {% block content %}{% endblock %}
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-dark border-top border-secondary mt-5">
-      <div class="container py-4">
+{% block footer %}
+<footer class="bg-dark border-top border-secondary mt-5">
+    <div class="container py-4">
         <div class="row g-4">
-          <div class="col-md-4">
-            <div class="d-flex align-items-center mb-3">
+            <div class="col-md-4">
+                <div class="d-flex align-items-center mb-3">
               <span class="d-inline-flex align-items-center justify-content-center rounded me-2"
                     style="width:32px;height:32px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
                 <i class="bi bi-car-front-fill text-black"></i>
               </span>
-              <span class="fw-semibold">NEMESIS IMPORTS</span>
+                    <span class="fw-semibold">NEMESIS IMPORTS</span>
+                </div>
+                <p class="text-secondary small mb-0">
+                    Founded by Marine veteran Cason Pewitt. Authentic JDM imports for Middle Tennessee and beyond.
+                </p>
             </div>
-            <p class="text-secondary small mb-0">
-              Founded by Marine veteran Cason Pewitt. Authentic JDM imports for Middle Tennessee and beyond.
-            </p>
-          </div>
-          <div class="col-md-4">
-            <h6 class="text-white">Quick Links</h6>
-            <ul class="list-unstyled small">
-              <li><a class="link-secondary text-decoration-none" href="{% url 'home' %}">Home</a></li>
-              <li><a class="link-secondary text-decoration-none" href="{% url 'inventory' %}">Inventory</a></li>
-              <li><a class="link-secondary text-decoration-none" href="{% url 'about' %}">About</a></li>
-              <li><a class="link-secondary text-decoration-none" href="{% url 'contact' %}">Contact</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4">
-            <h6 class="text-white">Contact</h6>
-            <ul class="list-unstyled small text-secondary mb-0">
-              <li class="mb-1"><i class="bi bi-telephone me-2"></i> +1 (555) 123-4567</li>
-              <li class="mb-1"><i class="bi bi-envelope me-2"></i> info@nemesisimports.com</li>
-              <li><i class="bi bi-geo-alt me-2"></i> Franklin, TN</li>
-            </ul>
-          </div>
+            <div class="col-md-4">
+                <h6 class="text-white">Quick Links</h6>
+                <ul class="list-unstyled small">
+                    <li><a class="link-secondary text-decoration-none" href="{% url 'home' %}">Home</a></li>
+                    <li><a class="link-secondary text-decoration-none" href="{% url 'inventory' %}">Inventory</a></li>
+                    <li><a class="link-secondary text-decoration-none" href="{% url 'about' %}">About</a></li>
+                    <li><a class="link-secondary text-decoration-none" href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="text-white">Contact</h6>
+                <ul class="list-unstyled small text-secondary mb-0">
+                    <li class="mb-1"><i class="bi bi-telephone me-2"></i> +1 (555) 123-4567</li>
+                    <li class="mb-1"><i class="bi bi-envelope me-2"></i> info@nemesisimports.com</li>
+                    <li><i class="bi bi-geo-alt me-2"></i> Franklin, TN</li>
+                </ul>
+            </div>
         </div>
         <div class="text-center text-secondary small border-top border-secondary mt-4 pt-3">
-          &copy; 2025 Nemesis Imports. All rights reserved.
+            &copy; 2025 Nemesis Imports. All rights reserved.
         </div>
-      </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-    {% block scripts %}{% endblock %}
-  </body>
+    </div>
+</footer>
+{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+{% block scripts %}{% endblock %}
+</body>
 </html>
