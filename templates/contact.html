@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Contact · Nemesis Imports{% endblock %}
 {% block content %}
+
+
 <section class="py-5 bg-dark border-bottom border-secondary text-center">
   <div class="container">
     <h1 class="display-5 fw-bold mb-2">Get in Touch</h1>
@@ -8,61 +10,150 @@
   </div>
 </section>
 
+
 <section class="py-5">
   <div class="container">
     <div class="row g-5">
-      <!-- Form -->
+      
+
       <div class="col-lg-7">
         <h2 class="h4 fw-bold mb-3">Send us a message</h2>
+        
+
         <form method="post" class="row g-3">
+
           {% csrf_token %}
+          
+
           <div class="col-sm-6">
             <label class="form-label">First Name</label>
-            <input type="text" name="first_name" class="form-control bg-dark border-secondary text-white" placeholder="Your first name">
+            <input type="text" name="first_name" class="form-control bg-dark border-secondary text-white" placeholder="Your first name" required>
           </div>
+          
+
           <div class="col-sm-6">
             <label class="form-label">Last Name</label>
-            <input type="text" name="last_name" class="form-control bg-dark border-secondary text-white" placeholder="Your last name">
+            <input type="text" name="last_name" class="form-control bg-dark border-secondary text-white" placeholder="Your last name" required>
           </div>
+          
+
           <div class="col-12">
             <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control bg-dark border-secondary text-white" placeholder="your.email@example.com">
+            <input type="email" name="email" class="form-control bg-dark border-secondary text-white" placeholder="your.email@example.com" required>
           </div>
+          
+
           <div class="col-12">
             <label class="form-label">Phone</label>
             <input type="tel" name="phone" class="form-control bg-dark border-secondary text-white" placeholder="Your phone number">
           </div>
+          
+
+          <div class="col-12">
+            <label class="form-label">Inquiry Type</label>
+            <select name="inquiry_type" class="form-select bg-dark border-secondary text-white">
+              <option value="general">General Inquiry</option>
+              <option value="purchase">Vehicle Purchase</option>
+              <option value="sourcing">Custom Vehicle Sourcing</option>
+              <option value="consignment">Consignment / Selling</option>
+            </select>
+          </div>
+
           <div class="col-12">
             <label class="form-label">Interested Vehicle</label>
             <input type="text" name="vehicle" class="form-control bg-dark border-secondary text-white" placeholder="e.g., 1995 Toyota Supra RZ">
           </div>
+          
+
           <div class="col-12">
             <label class="form-label">Message</label>
             <textarea name="message" rows="6" class="form-control bg-dark border-secondary text-white"
-                      placeholder="Tell us about your dream JDM car or any questions you have..."></textarea>
+                      placeholder="Tell us about your dream JDM car or any questions you have..." required></textarea>
           </div>
+          
+
           <div class="col-12 d-grid">
-            <button class="btn btn-primary btn-lg">Send message</button>
+            <button class="btn btn-primary btn-lg">
+              <i class="bi bi-send me-2"></i>Send message
+            </button>
           </div>
         </form>
       </div>
 
-      <!-- Contact info -->
+
       <div class="col-lg-5">
         <h2 class="h4 fw-bold mb-3">Contact Information</h2>
-        <ul class="list-unstyled text-secondary">
-          <li class="mb-3"><span class="badge bg-success me-2">&nbsp;</span> Phone: +1 (555) 123-4567</li>
-          <li class="mb-3"><span class="badge bg-success me-2">&nbsp;</span> Email: info@nemesisimports.com</li>
-          <li class="mb-3"><span class="badge bg-success me-2">&nbsp;</span> Location: Franklin, Tennessee</li>
-          <li class="mb-3"><span class="badge bg-success me-2">&nbsp;</span> Hours: Mon–Fri 9–6, Sat 10–4, Sun by appt</li>
+        
+
+        <ul class="list-unstyled text-secondary mb-4">
+          
+
+          <li class="mb-3 d-flex align-items-center">
+
+            <span class="d-inline-flex align-items-center justify-content-center rounded me-3" style="width:40px;height:40px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+              <i class="bi bi-telephone text-black"></i>
+            </span>
+            <div>
+              <div class="small text-secondary">Phone</div>
+
+              <a href="tel:+15551234567" class="text-white text-decoration-none">+1 (555) 123-4567</a>
+            </div>
+          </li>
+          
+
+          <li class="mb-3 d-flex align-items-center">
+            <span class="d-inline-flex align-items-center justify-content-center rounded me-3" style="width:40px;height:40px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+              <i class="bi bi-envelope text-black"></i>
+            </span>
+            <div>
+              <div class="small text-secondary">Email</div>
+
+              <a href="mailto:info@nemesisimports.com" class="text-white text-decoration-none">info@nemesisimports.com</a>
+            </div>
+          </li>
+          
+
+          <li class="mb-3 d-flex align-items-center">
+            <span class="d-inline-flex align-items-center justify-content-center rounded me-3" style="width:40px;height:40px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+              <i class="bi bi-geo-alt text-black"></i>
+            </span>
+            <div>
+              <div class="small text-secondary">Location</div>
+              <span class="text-white">Franklin, Tennessee</span>
+            </div>
+          </li>
+          
+
+          <li class="d-flex align-items-center">
+            <span class="d-inline-flex align-items-center justify-content-center rounded me-3" style="width:40px;height:40px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+              <i class="bi bi-clock text-black"></i>
+            </span>
+            <div>
+              <div class="small text-secondary">Hours</div>
+              <span class="text-white">Mon–Fri 9–6, Sat 10–4, Sun by appt</span>
+            </div>
+          </li>
         </ul>
+
+
         <div class="bg-dark border border-secondary rounded p-3">
-          <h3 class="h6">Schedule a meeting</h3>
-          <p class="text-secondary mb-3">Cason ensures every customer finds the right JDM machine. Let’s talk through your goals.</p>
-          <a class="btn btn-outline-primary" href="#">Schedule meeting</a>
+          <h3 class="h6">Quick Contact</h3>
+          <p class="text-secondary small mb-3">Prefer to call or email directly?</p>
+
+          <div class="d-grid gap-2">
+
+            <a class="btn btn-outline-primary" href="tel:+15551234567">
+              <i class="bi bi-telephone me-2"></i>Call Now
+            </a>
+
+            <a class="btn btn-outline-light" href="mailto:info@nemesisimports.com">
+              <i class="bi bi-envelope me-2"></i>Send Email
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 {% endblock %}

@@ -1,17 +1,179 @@
 {% extends "base.html" %}
 {% block title %}Home · Nemesis Imports{% endblock %}
 {% block content %}
-  <section class="py-5 bg-dark border-bottom border-secondary">
-    <div class="container text-center">
-      <h1 class="display-4 fw-bold mb-3">Authentic JDM Inventory</h1>
-      <p class="lead text-secondary mb-4">Discover legendary machines from Japan’s golden era.</p>
+
+
+<section class="py-5 bg-dark border-bottom border-secondary">
+  <div class="container text-center">
+
+    <span class="badge text-bg-success mb-3">Franklin, TN</span>
+
+    <h1 class="display-4 fw-bold mb-3">Authentic JDM Imports</h1>
+
+    <p class="lead text-secondary mb-4">Discover legendary machines from Japan's golden era.</p>
+
+    <div class="d-flex justify-content-center gap-3">
       <a class="btn btn-primary btn-lg" href="{% url 'inventory' %}">Browse Inventory</a>
+      <a class="btn btn-outline-light btn-lg" href="{% url 'contact' %}">Contact Us</a>
     </div>
-  </section>
-  <section class="py-5">
-    <div class="container">
-      <h2 class="h3 mb-3">Featured</h2>
-      <p class="text-secondary">Add cards here or pull from your queryset later.</p>
+  </div>
+</section>
+
+
+<section class="py-5">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h3 mb-0">Featured Vehicles</h2>
+      <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">View All</a>
     </div>
-  </section>
+    
+
+    <div class="row g-4">
+      {% for car in featured_cars %}
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card bg-dark border-0 shadow-sm h-100">
+
+          {% if car.images and car.images.0 %}
+            <img src="{{ car.images.0 }}" class="card-img-top" alt="{{ car.year }} {{ car.make }} {{ car.model }}">
+          {% else %}
+            <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#2563eb,#22c55e);">
+              <div class="d-flex align-items-center justify-content-center">
+                <i class="bi bi-car-front fs-1 text-white-50"></i>
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="card-body">
+
+            <h3 class="h5 card-title mb-1">{{ car.year }} {{ car.make }} {{ car.model }}</h3>
+
+            <p class="text-secondary small mb-3">{{ car.engine }} • {{ car.transmission }}</p>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fs-5 fw-bold text-success">${{ car.price|floatformat:0 }}</span>
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'car_detail' car.id %}">View details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card bg-dark border-0 shadow-sm h-100">
+          <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#2563eb,#22c55e);">
+            <div class="d-flex align-items-center justify-content-center">
+              <i class="bi bi-car-front fs-1 text-white-50"></i>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="h5 card-title mb-1">1995 Toyota Supra RZ</h3>
+            <p class="text-secondary small mb-3">2JZ-GTE • 6-Speed Manual</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fs-5 fw-bold text-success">$85,000</span>
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">View details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card bg-dark border-0 shadow-sm h-100">
+          <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#22c55e,#60a5fa);">
+            <div class="d-flex align-items-center justify-content-center">
+              <i class="bi bi-car-front fs-1 text-white-50"></i>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="h5 card-title mb-1">1999 Nissan Skyline GT-R</h3>
+            <p class="text-secondary small mb-3">RB26DETT • 6-Speed Manual</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fs-5 fw-bold text-success">$92,000</span>
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">View details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card bg-dark border-0 shadow-sm h-100">
+          <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#60a5fa,#a855f7);">
+            <div class="d-flex align-items-center justify-content-center">
+              <i class="bi bi-car-front fs-1 text-white-50"></i>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="h5 card-title mb-1">1997 Mazda RX-7 FD</h3>
+            <p class="text-secondary small mb-3">13B-REW • 5-Speed Manual</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fs-5 fw-bold text-success">$58,000</span>
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">View details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5 bg-dark border-top border-bottom border-secondary">
+  <div class="container">
+    <h2 class="h3 text-center mb-5">How It Works</h2>
+
+    <div class="row g-4 text-center">
+
+      <div class="col-md-3">
+
+        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+             style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+          <span class="fw-bold text-black fs-5">1</span>
+        </div>
+        <h5>Consult</h5>
+        <p class="text-secondary small mb-0">Tell us your dream car, budget, and timeline.</p>
+      </div>
+
+      <div class="col-md-3">
+        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+             style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+          <span class="fw-bold text-black fs-5">2</span>
+        </div>
+        <h5>Source</h5>
+        <p class="text-secondary small mb-0">We find your car through Japanese auctions and partners.</p>
+      </div>
+
+      <div class="col-md-3">
+        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+             style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+          <span class="fw-bold text-black fs-5">3</span>
+        </div>
+        <h5>Import</h5>
+        <p class="text-secondary small mb-0">We handle EPA, DOT, customs, and registration.</p>
+      </div>
+
+      <div class="col-md-3">
+        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+             style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
+          <span class="fw-bold text-black fs-5">4</span>
+        </div>
+        <h5>Deliver</h5>
+        <p class="text-secondary small mb-0">Your JDM machine arrives ready to drive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5">
+  <div class="container text-center">
+    <h2 class="h3 mb-3">Can't Find What You're Looking For?</h2>
+    <p class="text-secondary mb-4">We can source specific vehicles directly from Japan. Tell us your dream car.</p>
+    <a class="btn btn-primary" href="{% url 'contact' %}">
+      <i class="bi bi-chat-dots me-2"></i>Get in Touch
+    </a>
+  </div>
+</section>
+
 {% endblock %}
