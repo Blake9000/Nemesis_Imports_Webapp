@@ -64,6 +64,9 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'inventory' %}">Inventory</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+            {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
+            {% else %}
             <li class="nav-item"><a hx-get="{% url 'login' %}"
                                    hx-target="#modal-body"
                                    hx-swap="innerHTML"
@@ -71,6 +74,7 @@
                                   Login
                                 </a>
             </li>
+            {% endif %}
           </ul>
 
           <div class="d-none d-lg-flex ms-3 text-secondary small">

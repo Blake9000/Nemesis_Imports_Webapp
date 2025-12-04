@@ -38,19 +38,21 @@
         <span class="fw-semibold">Sign in with Google</span>
     </a>
 </div>
-  <div class="d-flex justify-content-end gap-2 pt-3 border-top border-secondary mt-2">
-    <div>
-        No account?
-        <a href="{% url 'register' %}">Register</a>
+    <div class="d-flex gap-2 pt-3 border-top border-secondary mt-2">
+        <div class="me-auto">
+            No account?
+            <a href="{% url 'register' %}">Register</a>
+        </div>
+
+        <button type="button"
+                onclick="closeModal()"
+                class="btn btn-outline-light btn-sm">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="btn btn-primary btn-sm fw-semibold">
+          Log in
+        </button>
     </div>
-    <button type="button"
-            onclick="closeModal()"
-            class="btn btn-outline-light btn-sm">
-      Cancel
-    </button>
-    <button type="submit"
-            class="btn btn-primary btn-sm fw-semibold">
-      Log in
-    </button>
-  </div>
 </form>
