@@ -38,3 +38,15 @@ def site_login(request):
         else:
             messages.error(request, "Username or password is incorrect")
     return render(request, "partials/_log_in.html", {"form": LoginForm()})
+
+def site_registration(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            login(request, new_user)
+            return redirect("student-list-url")
+    else:
+        form = StudentSignUpForm()
+
+    return render(request, "students/signup.html", {"form": form})

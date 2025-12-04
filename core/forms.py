@@ -11,3 +11,11 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"autocomplete": "current-password"})
     )
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(
+        required = True
+    )
+    class Meta:
+        model = User
+        fields = ["username", "email", "password1", "password2"]
