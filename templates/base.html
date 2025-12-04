@@ -13,8 +13,28 @@
 
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
 
+    <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
     {% block head %}{% endblock %}
   </head>
+
+<div id="modal"
+     class="modal block d-block d-none bg-black bg-opacity-50"
+     tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-m">
+    <div class="modal-content bg-dark text-light border-secondary shadow">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title w-100 text-center" id="modal-title">Log In</h5>
+        <button type="button"
+                class="btn-close btn-close-white"
+                onclick="closeModal()"></button>
+      </div>
+
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+</div>
+
   <body class="bg-black text-white">
 
 
@@ -45,6 +65,13 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'inventory' %}">Inventory</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+            <li class="nav-item"><a hx-get="{% url 'login' %}"
+                                   hx-target="#modal-body"
+                                   hx-swap="innerHTML"
+                                   class="nav-link">
+                                  Login
+                                </a>
+            </li>
           </ul>
 
           <div class="d-none d-lg-flex ms-3 text-secondary small">
@@ -137,3 +164,29 @@
     {% block scripts %}{% endblock %}
   </body>
 </html>
+
+<script>
+    function openModal() {
+        document.getElementById('modal').classList.remove('d-none');
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.add('d-none');
+        location.reload();
+    }
+
+    document.addEventListener('htmx:afterSwap', (e) => {
+        if (e.target.id === 'modal-body') openModal();
+    });
+    document.addEventListener('htmx:afterRequest', (e) => {
+        if (e.detail.xhr.getResponseHeader('HX-Trigger') === 'created') closeModal();
+    });
+  function getCookie(name) {
+    const m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return m ? m.pop() : '';
+  }
+  document.body.addEventListener('htmx:configRequest', (e) => {
+    e.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+  });
+
+</script>

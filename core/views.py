@@ -1,6 +1,9 @@
 # views.py
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Car
+from .forms import LoginForm
 
 def home(request):
     return render(request, "home.html")
@@ -23,3 +26,15 @@ def contact(request):
         # handle form submit later
         pass
     return render(request, "contact.html")
+
+def site_login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password"])
+            if user is not None:
+                login(request, user)
+            return redirect('about')
+        else:
+            messages.error(request, "Username or password is incorrect")
+    return render(request, "partials/_log_in.html", {"form": LoginForm()})
