@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Car
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
 
 def home(request):
     return render(request, "home.html")
@@ -47,6 +47,6 @@ def site_registration(request):
             login(request, new_user)
             return redirect("student-list-url")
     else:
-        form = StudentSignUpForm()
+        form = RegistrationForm()
 
-    return render(request, "students/signup.html", {"form": form})
+    return render(request, "register.html", {"form": form})
