@@ -3,8 +3,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import TemplateView
+
 from .models import Car
 from .forms import LoginForm, RegistrationForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def home(request):
     return render(request, "home.html")
@@ -27,6 +30,13 @@ def contact(request):
         # handle form submit later
         pass
     return render(request, "contact.html")
+
+class AdminPage(LoginRequiredMixin,UserPassesTestMixin, TemplateView):
+    template_name = "admin_page.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
 
 def site_login(request):
     if request.method == "POST":

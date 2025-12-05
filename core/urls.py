@@ -2,6 +2,7 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 from . import views
+from .views import AdminPage
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -13,5 +14,7 @@ urlpatterns = [
     path('register/', views.site_registration, name='register'),
 
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+
+    path('admin_page/', AdminPage.as_view(), name='admin_page'),
 ]
 
