@@ -35,11 +35,7 @@ def site_login(request):
             user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password"])
             if user is not None:
                 login(request, user)
-                return HttpResponse("""
-        <script>
-            closeModal();
-        </script>
-    """)
+                return render(request, "partials/_log_in.html", {"form": LoginForm(), "success":True})
         else:
             messages.error(request, "Username or password is incorrect")
     return render(request, "partials/_log_in.html", {"form": LoginForm()})
