@@ -1,6 +1,7 @@
 # views.py
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Car
 from .forms import LoginForm, RegistrationForm
@@ -34,7 +35,11 @@ def site_login(request):
             user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password"])
             if user is not None:
                 login(request, user)
-            return redirect('about')
+                return HttpResponse("""
+        <script>
+            closeModal();
+        </script>
+    """)
         else:
             messages.error(request, "Username or password is incorrect")
     return render(request, "partials/_log_in.html", {"form": LoginForm()})
@@ -44,7 +49,7 @@ def site_registration(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            login(request, new_user)
+            login(request, new_user, backend="django.contrib.auth.backends.ModelBackend")
             return redirect("student-list-url")
     else:
         form = RegistrationForm()
