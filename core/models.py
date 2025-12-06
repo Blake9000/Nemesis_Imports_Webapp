@@ -1,40 +1,75 @@
 from django.db import models
 
-# Create your models here.
 class Car(models.Model):
     TRANSMISSION_CHOICES = (
-    ("MANUAL", "Manual"),
-    ("AUTOMATIC", "Automatic")
+        ("MANUAL", "Manual"),
+        ("AUTOMATIC", "Automatic"),
     )
     CONDITION_CHOICES = (
-    ("POOR", "Poor"),
-    ("BELOW_AVERAGE", "Below Average"),
-    ("GOOD", "Good"),
-    ("VERY_GOOD", "Very Good"),
-    ("EXCELLENT", "Excellent"),
-    ("UNKNOWN", "Unknown")
+        ("POOR", "Poor"),
+        ("BELOW_AVERAGE", "Below Average"),
+        ("GOOD", "Good"),
+        ("VERY_GOOD", "Very Good"),
+        ("EXCELLENT", "Excellent"),
+        ("UNKNOWN", "Unknown"),
     )
+
     make = models.CharField(max_length=128)
     model = models.CharField(max_length=128)
     year = models.IntegerField()
     engine = models.CharField(max_length=128, blank=True, null=True)
-    transmission = models.CharField(max_length=128, choices=TRANSMISSION_CHOICES, default="MANUAL")
+    transmission = models.CharField(
+        max_length=128,
+        choices=TRANSMISSION_CHOICES,
+        default="MANUAL",
+    )
     mileage = models.IntegerField(blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
     color = models.CharField(max_length=50, blank=True, null=True)
-    condition = models.CharField(max_length=50, choices=CONDITION_CHOICES, default="UNKNOWN")
+    condition = models.CharField(
+        max_length=50,
+        choices=CONDITION_CHOICES,
+        default="UNKNOWN",
+    )
     description = models.TextField(blank=True, null=True)
     additional_features = models.JSONField(default=list, blank=True)
+    primary_image = models.ImageField(
+        upload_to="car_photos/",
+        blank=True,
+        null=True,
+    )
     is_featured = models.BooleanField(default=False)
     is_sold = models.BooleanField(default=False)
     import_date = models.DateTimeField(auto_now_add=False)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.year} {self.make} {self.model}"
+    def delete(self, *args, **kwargs):
+        # Delete primary image file if present
+        if self.primary_image:
+            self.primary_image.delete(save=False)
+
+        for extra in self.extra_images.all():
+            extra.delete()
+
+        super().delete(*args, **kwargs)
+
+
 class CarImage(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField()
-    caption = models.TextField(max_length=200,blank=True, null=True)
+    car = models.ForeignKey(
+        Car,
+        on_delete=models.CASCADE,
+        related_name="extra_images",
+    )
+    image = models.ImageField(upload_to="car_photos/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Image for {self.car.make} {self.car.model}"
+        return f"Image for {self.car}"
+
+    def delete(self, *args, **kwargs):
+        if self.image:
+            self.image.delete(save=False)
+        super().delete(*args, **kwargs)

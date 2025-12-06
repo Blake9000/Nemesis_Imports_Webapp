@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h5 class="modal-title">Delete car</h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+  <p class="mb-2">
+    Are you sure you want to delete this car from inventory?
+  </p>
+  <p class="fw-semibold mb-0">
+    {{ car.year }} {{ car.make }} {{ car.model }}
+  </p>
+  {% if car.mileage %}
+    <p class="small text-secondary mb-0">
+      Mileage: {{ car.mileage }} mi
+    </p>
+  {% endif %}
+  {% if car.price %}
+    <p class="small text-secondary mb-0">
+      Price: ${{ car.price }}
+    </p>
+  {% endif %}
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+    Cancel
+  </button>
+
+  <form
+      hx-post="{% url 'car_delete' car.id %}"
+      hx-target="#deleteConfirmModal"
+      hx-swap="outerHTML">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">
+      Yes, delete
+    </button>
+  </form>
+</div>

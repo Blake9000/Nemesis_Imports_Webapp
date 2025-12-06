@@ -3,10 +3,12 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import TemplateView
+from django.urls import reverse
+from django.views.generic import TemplateView, ListView
+from .models import Car, CarImage
 
 from .models import Car
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, CarForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def home(request):
@@ -20,7 +22,7 @@ def inventory(request):
 
 def car_detail(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    return render(request, "car_detail.html", {"car": car})
+    return render(request, "admin/car_detail.html", {"car": car})
 
 def about(request):
     return render(request, "about.html")
@@ -31,8 +33,10 @@ def contact(request):
         pass
     return render(request, "contact.html")
 
-class AdminPage(LoginRequiredMixin,UserPassesTestMixin, TemplateView):
-    template_name = "admin_page.html"
+class AdminCars(LoginRequiredMixin,UserPassesTestMixin, ListView):
+    template_name = "admin/admin_cars.html"
+    model = Car
+    context_object_name = "cars"
 
     def test_func(self):
         return self.request.user.is_superuser
@@ -61,3 +65,57 @@ def site_registration(request):
         form = RegistrationForm()
 
     return render(request, "register.html", {"form": form})
+
+
+def car_edit(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+
+    if request.method == "POST":
+        form = CarForm(request.POST, request.FILES, instance=car)
+        if form.is_valid():
+            car = form.save()
+
+            for img in request.FILES.getlist("additional_images"):
+                CarImage.objects.create(car=car, image=img)
+
+            return redirect("admin_cars")
+    else:
+        form = CarForm(instance=car)
+
+    return render(request, "admin/car_edit.html", {"form": form, "car": car})
+def car_delete_confirm(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+    # This returns only the modal content partial
+    return render(request, "admin/partials/car_delete_confirm_modal.html", {"car": car})
+
+
+def car_delete(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+
+    if request.method == "POST":
+        car.delete()
+
+        if request.headers.get("HX-Request"):
+            response = HttpResponse("", status=204)
+            response["HX-Redirect"] = reverse("admin_cars")
+            return response
+
+        return redirect("admin_cars")
+
+    # Non-POST fallback
+    return redirect("admin_cars")
+
+def car_create(request):
+    if request.method == "POST":
+        form = CarForm(request.POST, request.FILES)
+        if form.is_valid():
+            car = form.save()
+
+            for img in request.FILES.getlist("additional_images"):
+                CarImage.objects.create(car=car, image=img)
+
+            return redirect("admin_cars")
+    else:
+        form = CarForm()
+
+    return render(request, "admin/car_create.html", {"form": form})

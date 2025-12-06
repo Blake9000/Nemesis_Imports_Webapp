@@ -66,7 +66,7 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
             {% if user.is_superuser %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin_page' %}">Admin</a>
+                <a class="nav-link" href="{% url 'admin_cars' %}">Admin</a>
             </li>
             {% endif %}
             {% if user.is_authenticated %}

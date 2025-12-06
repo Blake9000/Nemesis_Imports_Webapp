@@ -1,0 +1,283 @@
+{% extends "admin/admin_base.html" %}
+
+{% block content %}
+<div class="container-fluid py-5 d-flex justify-content-center">
+  <div class="card bg-black border-secondary shadow-lg" style="width: 100%; max-width: 850px;">
+    <div class="card-body p-4">
+
+      <h2 class="h4 text-center mb-2">Edit {{ car.year }} {{ car.make }} {{ car.model }}</h2>
+      <p class="text-secondary small text-center mb-3">
+        Fields marked with <span class="text-danger">*</span> are required.
+      </p>
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger small">
+          {% for error in form.non_field_errors %}
+            {{ error }}<br>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label small text-uppercase text-secondary">
+                {{ form.primary_image.label }}
+                {% if form.primary_image.field.required %}<span class="text-danger">*</span>{% endif %}
+              </label>
+              {{ form.primary_image }}
+              {% if form.primary_image.errors %}
+                <div class="invalid-feedback d-block small">
+                  {% for error in form.primary_image.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+
+              {% if car.primary_image %}
+                <div class="mt-2">
+                  <span class="small text-secondary d-block mb-1">Current primary image:</span>
+                  <img src="{{ car.primary_image.url }}"
+                       alt="{{ car }}"
+                       class="img-fluid rounded border border-secondary"
+                       style="max-height: 200px; object-fit: cover;">
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small text-uppercase text-secondary">
+                {{ form.additional_images.label }}
+                {% if form.additional_images.field.required %}<span class="text-danger">*</span>{% endif %}
+              </label>
+              {{ form.additional_images }}
+              {% if form.additional_images.errors %}
+                <div class="invalid-feedback d-block small">
+                  {% for error in form.additional_images.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+              <div class="form-text text-secondary small">
+                Upload more photos (you can select multiple). Existing photos are shown below.
+              </div>
+            </div>
+
+            {% if car.extra_images.all %}
+            <div class="col-12 mt-2">
+              <span class="small text-secondary d-block mb-2">Additional images:</span>
+              <div class="d-flex flex-wrap gap-2">
+                {% for img in car.extra_images.all %}
+                  <div class="border border-secondary rounded overflow-hidden" style="width: 120px; height: 80px;">
+                    <img src="{{ img.image.url }}"
+                         alt="Extra image"
+                         class="w-100 h-100"
+                         style="object-fit: cover;">
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+
+
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.year.label }}
+              {% if form.year.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.year }}
+            {% if form.year.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.year.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.make.label }}
+              {% if form.make.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.make }}
+            {% if form.make.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.make.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.model.label }}
+              {% if form.model.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.model }}
+            {% if form.model.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.model.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.engine.label }}
+              {% if form.engine.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.engine }}
+            {% if form.engine.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.engine.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.transmission.label }}
+              {% if form.transmission.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.transmission }}
+            {% if form.transmission.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.transmission.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.mileage.label }}
+              {% if form.mileage.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.mileage }}
+            {% if form.mileage.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.mileage.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.price.label }}
+              {% if form.price.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.price }}
+            {% if form.price.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.price.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.color.label }}
+              {% if form.color.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.color }}
+            {% if form.color.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.color.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.condition.label }}
+              {% if form.condition.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.condition }}
+            {% if form.condition.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.condition.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.import_date.label }}
+              {% if form.import_date.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.import_date }}
+            {% if form.import_date.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.import_date.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.description.label }}
+              {% if form.description.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.description }}
+            {% if form.description.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.description.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small text-uppercase text-secondary">
+              {{ form.additional_features.label }}
+              {% if form.additional_features.field.required %}<span class="text-danger">*</span>{% endif %}
+            </label>
+            {{ form.additional_features }}
+            {% if form.additional_features.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.additional_features.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+            <div class="form-text text-secondary small">
+              JSON list, for example: <code>["Recaro seats", "Aftermarket turbo"]</code>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-check form-switch mt-2">
+              {{ form.is_featured }}
+              <label class="form-check-label">{{ form.is_featured.label }}</label>
+            </div>
+            {% if form.is_featured.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.is_featured.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-check form-switch mt-2">
+              {{ form.is_sold }}
+              <label class="form-check-label">{{ form.is_sold.label }}</label>
+            </div>
+            {% if form.is_sold.errors %}
+              <div class="invalid-feedback d-block small">
+                {% for error in form.is_sold.errors %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <span class="text-secondary small">
+            Created {{ car.created_date|date:"M j, Y g:i A" }}
+            · Updated {{ car.updated_date|date:"M j, Y g:i A" }}
+          </span>
+
+          <div class="d-flex gap-2">
+            <a href="{% url 'admin_cars' %}" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

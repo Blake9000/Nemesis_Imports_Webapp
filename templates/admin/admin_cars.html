@@ -1,0 +1,148 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col text-center">
+      <h1 class="h4 fw-semibold text-light">Car Inventory</h1>
+    </div>
+  </div>
+
+  <div class="card bg-dark border-secondary shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-dark table-hover table-striped mb-0 align-middle">
+        <thead class="table-secondary text-dark">
+          <tr>
+            <th scope="col" class="text-uppercase small fw-semibold">Car</th>
+            <th scope="col" class="text-uppercase small fw-semibold">Engine / Transmission</th>
+            <th scope="col" class="text-uppercase small fw-semibold text-end">Mileage</th>
+            <th scope="col" class="text-uppercase small fw-semibold text-end">Price</th>
+            <th scope="col" class="text-uppercase small fw-semibold">Condition</th>
+            <th scope="col" class="text-uppercase small fw-semibold">Status</th>
+
+            <th scope="col" class="text-uppercase small fw-semibold text-end">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for car in cars %}
+          <tr>
+            <td class="text-light">
+              <div class="fw-semibold">
+                {{ car.year }} {{ car.make }} {{ car.model }}
+              </div>
+              {% if car.color %}
+              <div class="small text-muted">
+                Color: {{ car.color }}
+              </div>
+              {% endif %}
+              {% if car.additional_features %}
+              <div class="mt-1">
+                {% for feature in car.additional_features %}
+                  <span class="badge bg-secondary text-dark me-1 mb-1">{{ feature }}</span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </td>
+
+            <td>
+              {% if car.engine %}
+              <div class="small text-light">
+                {{ car.engine }}
+              </div>
+              {% endif %}
+              <span class="badge bg-info text-dark">
+                {{ car.get_transmission_display }}
+              </span>
+            </td>
+
+            <td class="text-end">
+              {% if car.mileage %}
+              <span class="text-light">
+                {{ car.mileage }} mi
+              </span>
+              {% else %}
+              <span class="text-muted small">N/A</span>
+              {% endif %}
+            </td>
+
+            <td class="text-end">
+              {% if car.price %}
+              <span class="fw-semibold text-success">
+                ${{ car.price }}
+              </span>
+              {% else %}
+              <span class="text-muted small">TBD</span>
+              {% endif %}
+            </td>
+
+            <td>
+              <span class="badge
+                {% if car.condition == 'EXCELLENT' %}
+                  bg-success
+                {% elif car.condition == 'VERY_GOOD' or car.condition == 'GOOD' %}
+                  bg-primary
+                {% elif car.condition == 'BELOW_AVERAGE' or car.condition == 'POOR' %}
+                  bg-danger
+                {% else %}
+                  bg-secondary
+                {% endif %}
+              ">
+                {{ car.get_condition_display }}
+              </span>
+            </td>
+
+            <td>
+              {% if car.is_sold %}
+                <span class="badge bg-danger">Sold</span>
+              {% else %}
+                <span class="badge bg-success">Available</span>
+              {% endif %}
+
+              {% if car.is_featured %}
+                <span class="badge bg-warning text-dark ms-1">Featured</span>
+              {% endif %}
+
+              <div class="small text-muted mt-1">
+                Imported {{ car.import_date|date:"M j, Y" }}
+              </div>
+            </td>
+
+            <td class="text-end">
+              <a href="{% url 'car_edit' car.id %}"
+                 class="btn btn-sm btn-outline-primary me-2">
+                Edit
+              </a>
+
+              <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  hx-get="{% url 'car_delete_confirm' car.id %}"
+                  hx-target="#delete-confirm-modal-body"
+                  hx-trigger="click"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteConfirmModal">
+                Delete
+              </button>
+            </td>
+
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              No cars found in the database.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center my-4">
+  <a href="{% url 'car_create' %}" class="btn btn-success btn-lg">
+    + Add New Car
+  </a>
+</div>{% endblock %}
