@@ -1,4 +1,13 @@
 from django.db import models
+import os
+from datetime import datetime
+
+def timestamped_image_path(instance, filename):
+    base, ext = os.path.splitext(filename)
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    new_name = f"{base}-{timestamp}{ext}"
+    return f"car_photos/{new_name}"
+
 
 class Car(models.Model):
     TRANSMISSION_CHOICES = (
@@ -34,7 +43,7 @@ class Car(models.Model):
     description = models.TextField(blank=True, null=True)
     additional_features = models.JSONField(default=list, blank=True)
     primary_image = models.ImageField(
-        upload_to="car_photos/",
+        upload_to=timestamped_image_path,
         blank=True,
         null=True,
     )
@@ -63,7 +72,7 @@ class CarImage(models.Model):
         on_delete=models.CASCADE,
         related_name="extra_images",
     )
-    image = models.ImageField(upload_to="car_photos/")
+    image = models.ImageField(upload_to=timestamped_image_path)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -12,7 +12,8 @@ from .forms import LoginForm, RegistrationForm, CarForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 def home(request):
-    return render(request, "home.html")
+    cars = Car.objects.filter(is_sold=False).filter(is_featured=True)
+    return render(request, "home.html", {"cars": cars})
 
 def inventory(request):
     cars = Car.objects.filter(is_sold=False).order_by("-created_date")
@@ -22,7 +23,7 @@ def inventory(request):
 
 def car_detail(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    return render(request, "admin/car_detail.html", {"car": car})
+    return render(request, "car_detail.html", {"car": car})
 
 def about(request):
     return render(request, "about.html")

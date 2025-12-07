@@ -101,8 +101,8 @@
         <div class="card bg-dark border-0 shadow h-100 car-card">
 
           <div class="position-relative overflow-hidden">
-            {% if car.images and car.images.0 %}
-              <img src="{{ car.images.0 }}" 
+            {% if car.primary_image %}
+              <img src="{{ car.primary_image.url }}"
                    class="card-img-top" 
                    alt="{{ car.year }} {{ car.make }} {{ car.model }}"
                    style="height: 250px; object-fit: cover;">

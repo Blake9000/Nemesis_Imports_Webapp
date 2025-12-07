@@ -1,16 +1,59 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Home · Nemesis Imports{% endblock %}
 {% block content %}
+<style>
+.hero-full {
+  position: relative;
+  color: #fff;
+}
 
+/* The image drives the section height, no cropping */
+.hero-full-img {
+  display: block;
+  width: 100%;
+  height: auto;   /* critical: let aspect ratio and full height be preserved */
+}
 
-<section class="py-5 bg-dark border-bottom border-secondary">
-  <div class="container text-center">
+/* Dark overlay over the full image, no effect on height */
+.hero-full-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
 
+/* Content sits on top of image + overlay */
+.hero-full-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+</style>
+
+<section class="hero-full border-bottom border-secondary position-relative">
+
+  <img
+    src="/media/site_car_photos/IMG_1169.JPG.jpeg"
+    alt="JDM car"
+    class="hero-full-img">
+
+  <div class="hero-full-overlay"></div>
+
+  <div class="container hero-full-content text-center">
     <span class="badge text-bg-success mb-3">Franklin, TN</span>
 
     <h1 class="display-4 fw-bold mb-3">Authentic JDM Imports</h1>
 
-    <p class="lead text-secondary mb-4">Discover legendary machines from Japan's golden era.</p>
+    <p class="lead mb-4">
+      Discover legendary machines from Japan's golden era.
+    </p>
 
     <div class="d-flex justify-content-center gap-3">
       <a class="btn btn-primary btn-lg" href="{% url 'inventory' %}">Browse Inventory</a>
@@ -30,13 +73,13 @@
     
 
     <div class="row g-4">
-      {% for car in featured_cars %}
+      {% for car in cars %}
 
       <div class="col-md-6 col-lg-4">
         <div class="card bg-dark border-0 shadow-sm h-100">
 
-          {% if car.images and car.images.0 %}
-            <img src="{{ car.images.0 }}" class="card-img-top" alt="{{ car.year }} {{ car.make }} {{ car.model }}">
+          {% if car.primary_image %}
+            <img src="{{ car.primary_image.url }}" class="card-img-top" alt="{{ car.year }} {{ car.make }} {{ car.model }}">
           {% else %}
             <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#2563eb,#22c55e);">
               <div class="d-flex align-items-center justify-content-center">

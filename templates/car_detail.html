@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block title %}{{ car.year }} {{ car.make }} {{ car.model }} · Nemesis Imports{% endblock %}
+{% block content %}
+
+<section class="bg-dark py-3 border-bottom border-secondary">
+  <div class="container d-flex align-items-center gap-3">
+
+    <a class="btn btn-outline-secondary btn-sm" href="{% url 'inventory' %}">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+
+      <h1 class="h3 mb-0">{{ car.year }} {{ car.make }} {{ car.model }}</h1>
+
+      <div class="mt-1">
+        <span class="badge bg-success me-2">{{ car.condition }}</span>
+        {% if car.is_featured %}
+          <span class="badge bg-warning text-dark">
+            <i class="bi bi-star-fill me-1"></i>Featured
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-lg-6">
+
+        <div class="ratio ratio-16x9 bg-secondary rounded overflow-hidden mb-3">
+          {% if car.primary_image or car.extra_images.all %}
+            <div id="carImagesCarouselMain" class="carousel slide h-100" data-bs-ride="carousel">
+              <div class="carousel-inner h-100">
+
+                {% if car.primary_image %}
+                  <div class="carousel-item active h-100">
+                    <img src="{{ car.primary_image.url }}"
+                         class="d-block w-100 h-100 object-fit-cover"
+                         alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+                         data-bs-toggle="modal"
+                         data-bs-target="#imageLightbox"
+                         style="cursor: zoom-in;">
+                  </div>
+                {% endif %}
+
+                {% for extra in car.extra_images.all %}
+                  <div class="carousel-item {% if not car.primary_image and forloop.first %}active{% endif %} h-100">
+                    <img src="{{ extra.image.url }}"
+                         class="d-block w-100 h-100 object-fit-cover"
+                         alt="{{ car.year }} {{ car.make }} {{ car.model }} extra image {{ forloop.counter }}"
+                         data-bs-toggle="modal"
+                         data-bs-target="#imageLightbox"
+                         style="cursor: zoom-in;">
+                  </div>
+                {% endfor %}
+              </div>
+
+              <button class="carousel-control-prev" type="button" data-bs-target="#carImagesCarouselMain" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+
+              <button class="carousel-control-next" type="button" data-bs-target="#carImagesCarouselMain" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          {% else %}
+            <div class="d-flex align-items-center justify-content-center"
+                 style="background:linear-gradient(135deg,#2563eb,#22c55e);">
+              <i class="bi bi-car-front display-1 text-white-50"></i>
+            </div>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <div class="col-lg-6">
+
+        <div class="mb-4">
+          <div class="display-6 fw-bold text-success mb-1">${{ car.price|floatformat:0 }}</div>
+          <div class="text-secondary">Imported: {{ car.import_date|date:"m/d/Y" }}</div>
+        </div>
+
+        <div class="row row-cols-2 g-3 mb-4">
+
+          <div class="col">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-calendar text-primary"></i>
+              <div>
+                <div class="text-secondary small">Year</div>
+                <div class="fw-semibold">{{ car.year }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-gear text-primary"></i>
+              <div>
+                <div class="text-secondary small">Engine</div>
+                <div class="fw-semibold">{{ car.engine }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-speedometer2 text-primary"></i>
+              <div>
+                <div class="text-secondary small">Mileage</div>
+                <div class="fw-semibold">{{ car.mileage }} km</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-palette text-primary"></i>
+              <div>
+                <div class="text-secondary small">Color</div>
+                <div class="fw-semibold">{{ car.color }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-joystick text-primary"></i>
+              <div>
+                <div class="text-secondary small">Transmission</div>
+                <div class="fw-semibold">{{ car.transmission|default:"Manual" }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-arrows-move text-primary"></i>
+              <div>
+                <div class="text-secondary small">Drivetrain</div>
+                <div class="fw-semibold">{{ car.drivetrain|default:"RWD" }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h3 class="h5">Description</h3>
+          <p class="text-secondary">
+            {{ car.description|default:"This exceptional JDM import represents the pinnacle of Japanese engineering. Meticulously sourced and fully documented." }}
+          </p>
+        </div>
+
+        {% if car.features %}
+          <div class="mb-4">
+            <h3 class="h5">Features</h3>
+            <ul class="list-unstyled mb-0">
+              {% for f in car.features %}
+                <li class="d-flex align-items-center mb-1">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>
+                  <span class="text-secondary">{{ f }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <div class="bg-dark border border-secondary rounded p-3">
+          <h4 class="h6">Interested in this car?</h4>
+          <p class="text-secondary mb-3">Contact our team to schedule a viewing or get more information.</p>
+
+          <div class="d-grid d-sm-flex gap-2">
+            <a class="btn btn-primary flex-fill" href="tel:+15551234567">
+              <i class="bi bi-telephone me-2"></i>Call now
+            </a>
+
+            <a class="btn btn-outline-light flex-fill" href="mailto:info@nemesisimports.com?subject=Inquiry: {{ car.year }} {{ car.make }} {{ car.model }}">
+              <i class="bi bi-envelope me-2"></i>Email us
+            </a>
+          </div>
+
+          <div class="mt-3 pt-3 border-top border-secondary d-flex align-items-center gap-2 text-secondary small">
+            <i class="bi bi-shield-check text-success"></i>
+            <span>Full documentation included</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if car.primary_image or car.extra_images.all %}
+<div class="modal fade" id="imageLightbox" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-black border-0">
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-white">
+          {{ car.year }} {{ car.make }} {{ car.model }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body p-0">
+        <div id="carImagesLightboxCarousel" class="carousel slide" data-bs-ride="false">
+          <div class="carousel-inner">
+
+            {% if car.primary_image %}
+              <div class="carousel-item active">
+                <img src="{{ car.primary_image.url }}"
+                     class="d-block w-100"
+                     alt="{{ car.year }} {{ car.make }} {{ car.model }}">
+              </div>
+            {% endif %}
+
+            {% for extra in car.extra_images.all %}
+              <div class="carousel-item {% if not car.primary_image and forloop.first %}active{% endif %}">
+                <img src="{{ extra.image.url }}"
+                     class="d-block w-100"
+                     alt="{{ car.year }} {{ car.make }} {{ car.model }} image {{ forloop.counter }}">
+              </div>
+            {% endfor %}
+          </div>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#carImagesLightboxCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+
+          <button class="carousel-control-next" type="button" data-bs-target="#carImagesLightboxCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
