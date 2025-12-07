@@ -12,7 +12,6 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path('login/', views.site_login, name='login'),
     path('register/', views.site_registration, name='register'),
-
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
 
     path('admin_cars/', AdminCars.as_view(), name='admin_cars'),
