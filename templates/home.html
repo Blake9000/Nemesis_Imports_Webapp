@@ -103,58 +103,8 @@
       </div>
       {% empty %}
 
-      <div class="col-md-6 col-lg-4">
-        <div class="card bg-dark border-0 shadow-sm h-100">
-          <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#2563eb,#22c55e);">
-            <div class="d-flex align-items-center justify-content-center">
-              <i class="bi bi-car-front fs-1 text-white-50"></i>
-            </div>
-          </div>
-          <div class="card-body">
-            <h3 class="h5 card-title mb-1">1995 Toyota Supra RZ</h3>
-            <p class="text-secondary small mb-3">2JZ-GTE • 6-Speed Manual</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="fs-5 fw-bold text-success">$85,000</span>
-              <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">View details</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="card bg-dark border-0 shadow-sm h-100">
-          <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#22c55e,#60a5fa);">
-            <div class="d-flex align-items-center justify-content-center">
-              <i class="bi bi-car-front fs-1 text-white-50"></i>
-            </div>
-          </div>
-          <div class="card-body">
-            <h3 class="h5 card-title mb-1">1999 Nissan Skyline GT-R</h3>
-            <p class="text-secondary small mb-3">RB26DETT • 6-Speed Manual</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="fs-5 fw-bold text-success">$92,000</span>
-              <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">View details</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="card bg-dark border-0 shadow-sm h-100">
-          <div class="ratio ratio-16x9" style="background:linear-gradient(135deg,#60a5fa,#a855f7);">
-            <div class="d-flex align-items-center justify-content-center">
-              <i class="bi bi-car-front fs-1 text-white-50"></i>
-            </div>
-          </div>
-          <div class="card-body">
-            <h3 class="h5 card-title mb-1">1997 Mazda RX-7 FD</h3>
-            <p class="text-secondary small mb-3">13B-REW • 5-Speed Manual</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="fs-5 fw-bold text-success">$58,000</span>
-              <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">View details</a>
-            </div>
-          </div>
-        </div>
+      <div class="d-flex justify-content-center">
+      <span class=""> No cars yet. Check back later!</span>
       </div>
       {% endfor %}
     </div>
