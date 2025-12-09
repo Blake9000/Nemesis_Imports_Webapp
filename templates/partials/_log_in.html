@@ -1,4 +1,6 @@
 {% load widget_tweaks %}
+{% load socialaccount %}
+
 <form hx-post="{% url 'login' %}"
       hx-target="#modal-body"
       hx-swap="innerHTML"
@@ -29,7 +31,7 @@
     {% endif %}
   </div>
 <div class="d-flex justify-content-center">
-    <a href="#"
+    <a href="{% provider_login_url 'google' process='login' %}"
        class="btn d-inline-flex p-2 align-items-center justify-content-center gap-2 py-2 px-3"
        style="background:#fff; color:#444; border:1px solid #ddd; border-radius:6px;">
         <img src="https://www.gstatic.com/images/branding/product/1x/gsa_64dp.png"
