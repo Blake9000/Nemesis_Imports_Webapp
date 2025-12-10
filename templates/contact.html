@@ -15,70 +15,23 @@
   <div class="container">
     <div class="row g-5">
       
+        <div class="col-lg-7">
+          <h2 class="h4 fw-bold mb-3">Schedule a visit or call</h2>
+          <p class="text-secondary mb-4">
+            Pick a time that works for you below. Once booked, you’ll get an email confirmation and calendar invite.
+          </p>
 
-      <div class="col-lg-7">
-        <h2 class="h4 fw-bold mb-3">Send us a message</h2>
-        
-
-        <form method="post" class="row g-3">
-
-          {% csrf_token %}
-          
-
-          <div class="col-sm-6">
-            <label class="form-label">First Name</label>
-            <input type="text" name="first_name" class="form-control bg-dark border-secondary text-white" placeholder="Your first name" required>
+          <div class="bg-light text-dark rounded-3 p-3">
+            <div class="ratio ratio-4x3">
+              <iframe
+                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3ZUT8QueVBf7DWWy3LCX4o6myTkFmJ764ErX0RMstrKz2Dsk_mnq_8v04qfBndLr6yREy3fkcT?gv=true"
+                class="w-100 h-100 border-0"
+                loading="lazy">
+              </iframe>
+            </div>
           </div>
-          
+        </div>
 
-          <div class="col-sm-6">
-            <label class="form-label">Last Name</label>
-            <input type="text" name="last_name" class="form-control bg-dark border-secondary text-white" placeholder="Your last name" required>
-          </div>
-          
-
-          <div class="col-12">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control bg-dark border-secondary text-white" placeholder="your.email@example.com" required>
-          </div>
-          
-
-          <div class="col-12">
-            <label class="form-label">Phone</label>
-            <input type="tel" name="phone" class="form-control bg-dark border-secondary text-white" placeholder="Your phone number">
-          </div>
-          
-
-          <div class="col-12">
-            <label class="form-label">Inquiry Type</label>
-            <select name="inquiry_type" class="form-select bg-dark border-secondary text-white">
-              <option value="general">General Inquiry</option>
-              <option value="purchase">Vehicle Purchase</option>
-              <option value="sourcing">Custom Vehicle Sourcing</option>
-              <option value="consignment">Consignment / Selling</option>
-            </select>
-          </div>
-
-          <div class="col-12">
-            <label class="form-label">Interested Vehicle</label>
-            <input type="text" name="vehicle" class="form-control bg-dark border-secondary text-white" placeholder="e.g., 1995 Toyota Supra RZ">
-          </div>
-          
-
-          <div class="col-12">
-            <label class="form-label">Message</label>
-            <textarea name="message" rows="6" class="form-control bg-dark border-secondary text-white"
-                      placeholder="Tell us about your dream JDM car or any questions you have..." required></textarea>
-          </div>
-          
-
-          <div class="col-12 d-grid">
-            <button class="btn btn-primary btn-lg">
-              <i class="bi bi-send me-2"></i>Send message
-            </button>
-          </div>
-        </form>
-      </div>
 
 
       <div class="col-lg-5">

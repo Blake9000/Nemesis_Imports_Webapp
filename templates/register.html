@@ -43,7 +43,12 @@
 
     <p class="mt-3 text-center">
       Already have an account?
-      <a href="{% url 'login' %}" class="text-info">Log in</a>
+      <a hx-get="{% url 'login' %}"
+                                   hx-target="#modal-body"
+                                   hx-swap="innerHTML"
+                                   class="">
+                                  Log in
+                                </a>
     </p>
 </div>
 {% endblock %}

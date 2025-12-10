@@ -1,6 +1,8 @@
 # views.py
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -14,12 +16,74 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 def home(request):
     cars = Car.objects.filter(is_sold=False).filter(is_featured=True)
     return render(request, "home.html", {"cars": cars})
-
 def inventory(request):
-    cars = Car.objects.filter(is_sold=False).order_by("-created_date")
-    # derive unique makes for filter
-    makes = sorted({c.make for c in cars})
-    return render(request, "inventory.html", {"cars": cars, "makes": makes, "total_count": cars.count()})
+    # Base queryset: all cars in inventory
+    cars_qs = Car.objects.all()
+
+    # For the "of X total" text
+    total_count = cars_qs.count()
+
+    # Distinct makes for the dropdown
+    makes = (
+        Car.objects.values_list("make", flat=True)
+        .distinct()
+        .order_by("make")
+    )
+
+    # Get filter values from query string
+    q = request.GET.get("q", "").strip()
+    make = request.GET.get("make", "").strip()
+    decade = request.GET.get("decade", "").strip()
+    sort = request.GET.get("sort", "newest").strip()
+
+    # Text search across make, model, year, and optionally description
+    if q:
+        cars_qs = cars_qs.filter(
+            Q(make__icontains=q)
+            | Q(model__icontains=q)
+            | Q(year__icontains=q)
+            | Q(description__icontains=q)
+        )
+
+    # Filter by make
+    if make:
+        cars_qs = cars_qs.filter(make=make)
+
+    # Filter by decade: 1970 -> 1970 to 1979, etc
+    if decade:
+        try:
+            start_year = int(decade)
+            end_year = start_year + 9
+            cars_qs = cars_qs.filter(year__gte=start_year, year__lte=end_year)
+        except ValueError:
+            pass  # ignore bad decade values
+
+    # Sorting
+    if sort == "price-low":
+        cars_qs = cars_qs.order_by("price")
+    elif sort == "price-high":
+        cars_qs = cars_qs.order_by("-price")
+    elif sort == "year-new":
+        cars_qs = cars_qs.order_by("-year")
+    elif sort == "year-old":
+        cars_qs = cars_qs.order_by("year")
+    else:
+        # "newest" default - using id as a simple proxy for latest
+        cars_qs = cars_qs.order_by("-id")
+
+    # Pagination
+    paginator = Paginator(cars_qs, 9)  # 9 cars per page
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "cars": page_obj.object_list,
+        "page_obj": page_obj,
+        "makes": makes,
+        "total_count": total_count,
+    }
+
+    return render(request, "inventory.html", context)
 
 def car_detail(request, pk):
     car = get_object_or_404(Car, pk=pk)
