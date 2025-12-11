@@ -23,18 +23,48 @@
     box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
   }
   
+
   .car-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .car-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.2), transparent);
+    transition: left 0.6s;
+  }
+  
+  .car-card:hover::before {
+    left: 100%;
   }
   
   .car-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-10px) scale(1.02);
     box-shadow: 0 25px 50px rgba(0, 245, 255, 0.3);
+    border-color: var(--neon-blue);
   }
   
+  .car-card img {
+    transition: transform 0.6s ease;
+  }
+  
+  .car-card:hover img {
+    transform: scale(1.1);
+  }
+  
+
   .hero-section {
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   }
   
   .hero-section::before {
@@ -48,11 +78,58 @@
     animation: pulse 4s ease-in-out infinite;
   }
   
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 0.8; }
+
+  .hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid-move 10s linear infinite;
+    opacity: 0.3;
   }
   
+  @keyframes grid-move {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { 
+      transform: scale(1); 
+      opacity: 0.5; 
+    }
+    50% { 
+      transform: scale(1.1); 
+      opacity: 0.8; 
+    }
+  }
+  
+
+  .typing-text {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .typing-text::after {
+    content: '|';
+    position: absolute;
+    right: -10px;
+    animation: blink 1s infinite;
+    color: var(--neon-green);
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+
   .fade-in {
     opacity: 0;
     animation: fadeIn 1s ease forwards;
@@ -75,10 +152,49 @@
     }
   }
   
+  .slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 0.8s ease forwards;
+  }
+  
+  @keyframes slideInLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slideInRight 0.8s ease forwards;
+  }
+  
+  @keyframes slideInRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+
   .btn-primary {
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    border: 2px solid transparent;
+    background: linear-gradient(45deg, #2563eb, #22c55e);
   }
   
   .btn-primary::before {
@@ -89,9 +205,15 @@
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
+  }
+  
+  .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 245, 255, 0.4);
+    border-color: var(--neon-blue);
   }
   
   .btn-primary:hover::before {
@@ -102,36 +224,132 @@
   .btn-outline-light {
     transition: all 0.3s ease;
     border: 2px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-outline-light::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.4), transparent);
+    transition: left 0.6s;
   }
   
   .btn-outline-light:hover {
     border-color: var(--neon-blue);
-    box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
+    transform: scale(1.05);
   }
   
+  .btn-outline-light:hover::after {
+    left: 100%;
+  }
+  
+
   .process-number {
     transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .process-step {
+    position: relative;
+  }
+  
+  .process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: calc(50% + 32px);
+    width: calc(100% - 64px);
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+    opacity: 0.3;
+  }
+  
+  @media (max-width: 768px) {
+    .process-step::after {
+      display: none;
+    }
   }
   
   .process-step:hover .process-number {
-    transform: rotate(360deg) scale(1.1);
-    box-shadow: 0 0 25px rgba(0, 245, 255, 0.6);
+    transform: rotate(360deg) scale(1.2);
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.8);
   }
   
+
+  .stats-number {
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .counter {
+    display: inline-block;
+    min-width: 80px;
+  }
+  
+
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  
+
+  .glow-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-green), transparent);
+    background-size: 200% 100%;
+    animation: glow-slide 3s linear infinite;
+  }
+  
+  @keyframes glow-slide {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+
+  .feature-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 245, 255, 0.2);
+    background: rgba(26, 26, 26, 0.5);
+    backdrop-filter: blur(10px);
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-blue);
+    box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+    background: rgba(0, 245, 255, 0.05);
+  }
+  
+  .feature-icon {
+    transition: all 0.3s ease;
+  }
+  
+  .feature-card:hover .feature-icon {
+    transform: scale(1.2) rotate(10deg);
+    color: var(--neon-green) !important;
+  }
 </style>
 
 
 <section class="py-5 bg-dark border-bottom border-secondary hero-section">
   <div class="container text-center position-relative">
+    
 
-    <span class="badge text-bg-success mb-3 fade-in">Franklin, TN</span>
+    <span class="badge text-bg-success mb-3 fade-in float-animation">Franklin, TN</span>
 
     <h1 class="display-4 fw-bold mb-3 fade-in">
-      Authentic <span class="gradient-text">JDM</span> Imports
+      Authentic <span class="gradient-text typing-text">JDM</span> Imports
     </h1>
 
     <p class="lead text-secondary mb-4 slide-up">
@@ -140,38 +358,58 @@
 
     <div class="d-flex justify-content-center gap-3 slide-up" style="animation-delay: 0.3s;">
       <a class="btn btn-primary btn-lg position-relative" href="{% url 'inventory' %}">
-        Browse Inventory
+        <i class="bi bi-speedometer2 me-2"></i>Browse Inventory
       </a>
-      <a class="btn btn-outline-light btn-lg" href="{% url 'contact' %}">
-        Contact Us
+      <a class="btn btn-outline-light btn-lg position-relative" href="{% url 'contact' %}">
+        <i class="bi bi-chat-dots me-2"></i>Contact Us
       </a>
+    </div>
+    
+
+    <div class="row mt-5 pt-4">
+      <div class="col-6 col-md-3 slide-up stagger-1">
+        <div class="stats-number counter" data-target="{{ total_imports|default:'150' }}">0</div>
+        <div class="text-secondary small">Cars Imported</div>
+      </div>
+      <div class="col-6 col-md-3 slide-up stagger-2">
+        <div class="stats-number counter" data-target="{{ happy_customers|default:'100' }}">0</div>
+        <div class="text-secondary small">Happy Customers</div>
+      </div>
+      <div class="col-6 col-md-3 slide-up stagger-3">
+        <div class="stats-number counter" data-target="{{ years_experience|default:'15' }}">0</div>
+        <div class="text-secondary small">Years Experience</div>
+      </div>
+      <div class="col-6 col-md-3 slide-up stagger-4">
+        <div class="stats-number counter" data-target="{{ available_now|default:'25' }}">0</div>
+        <div class="text-secondary small">Available Now</div>
+      </div>
     </div>
   </div>
 </section>
 
 
+<div class="glow-line"></div>
+
+
 <section class="py-5">
   <div class="container">
-
-    <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
-      <h2 class="h3 mb-0">Featured <span class="gradient-text">Vehicles</span></h2>
-      <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h3 mb-0 slide-in-left">Featured <span class="gradient-text">Vehicles</span></h2>
+      <a class="btn btn-outline-primary btn-sm slide-in-right" href="{% url 'inventory' %}">
         View All <i class="bi bi-arrow-right ms-1"></i>
       </a>
     </div>
     
-
     <div class="row g-4">
       {% for car in featured_cars %}
-
       <div class="col-md-6 col-lg-4 slide-up stagger-{{ forloop.counter }}">
         <div class="card bg-dark border-0 shadow-sm h-100 car-card">
-
           {% if car.images and car.images.0 %}
             <div class="position-relative overflow-hidden">
-              <img src="{{ car.images.0 }}" class="card-img-top" alt="{{ car.year }} {{ car.make }} {{ car.model }}" style="transition: transform 0.3s ease;">
+              <img src="{{ car.images.0 }}" class="card-img-top" alt="{{ car.year }} {{ car.make }} {{ car.model }}">
               <div class="position-absolute top-0 end-0 m-2">
-                <span class="badge bg-success">Available</span>
+                <span class="badge bg-success float-animation">Available</span>
               </div>
             </div>
           {% else %}
@@ -179,17 +417,21 @@
               <div class="d-flex align-items-center justify-content-center">
                 <i class="bi bi-car-front fs-1 text-white-50"></i>
               </div>
+              <div class="position-absolute top-0 end-0 m-2">
+                <span class="badge bg-success float-animation">Available</span>
+              </div>
             </div>
           {% endif %}
-
           <div class="card-body">
-
             <h3 class="h5 card-title mb-1">{{ car.year }} {{ car.make }} {{ car.model }}</h3>
-
-            <p class="text-secondary small mb-3">{{ car.engine }} • {{ car.transmission }}</p>
-
+            <p class="text-secondary small mb-3">
+              <i class="bi bi-gear-fill text-primary me-1"></i>{{ car.engine }} • 
+              <i class="bi bi-shift-fill text-primary me-1"></i>{{ car.transmission }}
+            </p>
             <div class="d-flex justify-content-between align-items-center">
-              <span class="fs-5 fw-bold" style="color: var(--neon-green);">${{ car.price|floatformat:0 }}</span>
+              <span class="fs-5 fw-bold" style="color: var(--neon-green);">
+                ${{ car.price|floatformat:0 }}
+              </span>
               <a class="btn btn-outline-primary btn-sm" href="{% url 'car_detail' car.id %}">
                 View details <i class="bi bi-arrow-right ms-1"></i>
               </a>
@@ -206,12 +448,15 @@
               <i class="bi bi-car-front fs-1 text-white-50"></i>
             </div>
             <div class="position-absolute top-0 end-0 m-2">
-              <span class="badge bg-success">Available</span>
+              <span class="badge bg-success float-animation">Available</span>
             </div>
           </div>
           <div class="card-body">
             <h3 class="h5 card-title mb-1">1995 Toyota Supra RZ</h3>
-            <p class="text-secondary small mb-3">2JZ-GTE • 6-Speed Manual</p>
+            <p class="text-secondary small mb-3">
+              <i class="bi bi-gear-fill text-primary me-1"></i>2JZ-GTE • 
+              <i class="bi bi-shift-fill text-primary me-1"></i>6-Speed Manual
+            </p>
             <div class="d-flex justify-content-between align-items-center">
               <span class="fs-5 fw-bold" style="color: var(--neon-green);">$85,000</span>
               <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">
@@ -229,12 +474,15 @@
               <i class="bi bi-car-front fs-1 text-white-50"></i>
             </div>
             <div class="position-absolute top-0 end-0 m-2">
-              <span class="badge bg-success">Available</span>
+              <span class="badge bg-success float-animation">Available</span>
             </div>
           </div>
           <div class="card-body">
             <h3 class="h5 card-title mb-1">1999 Nissan Skyline GT-R</h3>
-            <p class="text-secondary small mb-3">RB26DETT • 6-Speed Manual</p>
+            <p class="text-secondary small mb-3">
+              <i class="bi bi-gear-fill text-primary me-1"></i>RB26DETT • 
+              <i class="bi bi-shift-fill text-primary me-1"></i>6-Speed Manual
+            </p>
             <div class="d-flex justify-content-between align-items-center">
               <span class="fs-5 fw-bold" style="color: var(--neon-green);">$92,000</span>
               <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">
@@ -252,12 +500,15 @@
               <i class="bi bi-car-front fs-1 text-white-50"></i>
             </div>
             <div class="position-absolute top-0 end-0 m-2">
-              <span class="badge bg-success">Available</span>
+              <span class="badge bg-success float-animation">Available</span>
             </div>
           </div>
           <div class="card-body">
             <h3 class="h5 card-title mb-1">1997 Mazda RX-7 FD</h3>
-            <p class="text-secondary small mb-3">13B-REW • 5-Speed Manual</p>
+            <p class="text-secondary small mb-3">
+              <i class="bi bi-gear-fill text-primary me-1"></i>13B-REW • 
+              <i class="bi bi-shift-fill text-primary me-1"></i>5-Speed Manual
+            </p>
             <div class="d-flex justify-content-between align-items-center">
               <span class="fs-5 fw-bold" style="color: var(--neon-green);">$58,000</span>
               <a class="btn btn-outline-primary btn-sm" href="{% url 'inventory' %}">
@@ -276,13 +527,54 @@
 <section class="py-5 bg-dark border-top border-bottom border-secondary">
   <div class="container">
     <h2 class="h3 text-center mb-5 fade-in">
+      Why Choose <span class="gradient-text">Nemesis?</span>
+    </h2>
+    
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3 slide-up stagger-1">
+        <div class="card feature-card h-100 p-4 text-center">
+          <i class="bi bi-shield-check feature-icon fs-1 text-primary mb-3"></i>
+          <h5 class="mb-2">Trusted Source</h5>
+          <p class="text-secondary small mb-0">Marine veteran-owned with authentic Japanese connections</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3 slide-up stagger-2">
+        <div class="card feature-card h-100 p-4 text-center">
+          <i class="bi bi-globe-asia-australia feature-icon fs-1 text-primary mb-3"></i>
+          <h5 class="mb-2">Direct Import</h5>
+          <p class="text-secondary small mb-0">Straight from Japan's best auctions and dealers</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3 slide-up stagger-3">
+        <div class="card feature-card h-100 p-4 text-center">
+          <i class="bi bi-clipboard-check feature-icon fs-1 text-primary mb-3"></i>
+          <h5 class="mb-2">Full Service</h5>
+          <p class="text-secondary small mb-0">We handle all import paperwork and compliance</p>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-lg-3 slide-up stagger-4">
+        <div class="card feature-card h-100 p-4 text-center">
+          <i class="bi bi-heart-fill feature-icon fs-1 text-primary mb-3"></i>
+          <h5 class="mb-2">Community</h5>
+          <p class="text-secondary small mb-0">Join Tennessee's growing JDM enthusiast network</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="h3 text-center mb-5 fade-in">
       How It <span class="gradient-text">Works</span>
     </h2>
 
     <div class="row g-4 text-center">
-
       <div class="col-md-3 slide-up stagger-1 process-step">
-
         <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 process-number"
              style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
           <span class="fw-bold text-black fs-5">1</span>
@@ -322,14 +614,69 @@
 </section>
 
 
-<section class="py-5">
+<section class="py-5 bg-dark border-top border-secondary">
   <div class="container text-center fade-in">
     <h2 class="h3 mb-3">Can't Find What You're <span class="gradient-text">Looking For?</span></h2>
     <p class="text-secondary mb-4">We can source specific vehicles directly from Japan. Tell us your dream car.</p>
     <a class="btn btn-primary position-relative" href="{% url 'contact' %}">
-      <i class="bi bi-chat-dots me-2"></i>Get in Touch
+      <i class="bi bi-search me-2"></i>Request Custom Import
     </a>
   </div>
 </section>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  const counters = document.querySelectorAll('.counter');
+  const speed = 200;
+  
+  const startCounting = (counter) => {
+    const target = +counter.getAttribute('data-target');
+    const increment = target / speed;
+    let current = 0;
+    
+    const updateCount = () => {
+      if (current < target) {
+        current += increment;
+        counter.innerText = Math.ceil(current);
+        setTimeout(updateCount, 10);
+      } else {
+        counter.innerText = target + '+';
+      }
+    };
+    
+    updateCount();
+  };
+  
+
+  const observerOptions = {
+    threshold: 0.5,
+    rootMargin: '0px'
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+        startCounting(entry.target);
+        entry.target.classList.add('counted');
+      }
+    });
+  }, observerOptions);
+  
+  counters.forEach(counter => {
+    observer.observe(counter);
+  });
+  
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const parallax = document.querySelector('.hero-section');
+    if (parallax) {
+      parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+    }
+  });
+});
+</script>
 
 {% endblock %}
