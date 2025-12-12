@@ -3,235 +3,142 @@
 {% block content %}
 
 <style>
-  :root {
-    --neon-blue: #00f5ff;
-    --neon-green: #39ff14;
-    --electric-orange: #ff6b00;
-    --deep-black: #0a0a0a;
-    --charcoal: #1a1a1a;
-  }
-  
-  .gradient-text {
-    background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: inline-block;
-  }
-  
-  .fade-in {
-    opacity: 0;
-    animation: fadeIn 1s ease forwards;
-  }
-  
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
-  
-  .slide-up {
-    opacity: 0;
-    transform: translateY(40px);
-    animation: slideUp 0.8s ease forwards;
-  }
-  
-  @keyframes slideUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .value-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .value-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 245, 255, 0.2);
-  }
-  
 
-  .value-icon {
-    transition: all 0.3s ease;
-    position: relative;
-  }
-  
-  .value-card:hover .value-icon {
-    transform: rotate(360deg) scale(1.1);
-  }
-  
-  .value-card:hover .value-icon::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120%;
-    height: 120%;
-    border-radius: 50%;
-    box-shadow: 0 0 25px rgba(0, 245, 255, 0.6);
-    animation: halo 0.5s ease forwards;
-  }
-  
-  @keyframes halo {
-    from {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-  }
-  
-  .experience-card {
-    transition: all 0.3s ease;
-    border-left: 3px solid transparent;
-  }
-  
-  .experience-card:hover {
-    border-left-color: var(--neon-blue);
-    padding-left: 20px;
-    background: linear-gradient(to right, rgba(0, 245, 255, 0.05), transparent);
-  }
-  
-  .experience-number {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.8);
-  }
-  
-  .stagger-1 { animation-delay: 0.1s; }
-  .stagger-2 { animation-delay: 0.2s; }
-  .stagger-3 { animation-delay: 0.3s; }
-  .stagger-4 { animation-delay: 0.4s; }
-  
-  .hero-section {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(to right, #1a1a1a, #0a0a0a);
-  }
-  
-  .hero-section::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 245, 255, 0.1) 0%, transparent 70%);
-    animation: pulse 4s ease-in-out infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-  }
-  
-  .founder-quote {
-    position: relative;
-    padding: 2rem;
-    border-radius: 10px;
-    background: linear-gradient(135deg, rgba(0, 245, 255, 0.05), rgba(57, 255, 20, 0.05));
-  }
-  
-  .founder-quote::before {
-    content: '"';
-    position: absolute;
-    top: -20px;
-    left: 20px;
-    font-size: 80px;
-    color: var(--neon-blue);
-    opacity: 0.3;
-  }
-  
-  .btn-primary {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-  
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-  }
-  
-  .btn-primary:hover::before {
-    width: 300px;
-    height: 300px;
-  }
-  
-  .experience-visual {
-    background: linear-gradient(135deg, #2563eb, #22c55e);
-    border-radius: 15px;
-    transition: transform 0.3s ease;
-  }
-  
-  .experience-visual:hover {
-    transform: scale(1.05);
-  }
-  
-  .mission-section {
-    background: #1a1a1a;
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
-  }
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.icon-circle {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(90deg, #60a5fa, #22c55e);
+}
 </style>
 
-
-<section class="py-5 bg-dark border-bottom border-secondary text-center hero-section">
-  <div class="container position-relative">
-    <h1 class="display-4 fw-bold mb-3 fade-in">
-      OUR <span class="gradient-text">STORY</span>
-    </h1>
-    <p class="lead text-secondary mb-0 slide-up">
-      Founded by Marine veteran Cason Pewitt, bringing authentic JDM culture<br>
-      from Japan to Middle Tennessee and beyond.
-    </p>
+<section class="py-5 bg-dark border-bottom border-secondary text-center">
+  <div class="container">
+    <h1 class="display-5 fw-bold mb-3">Our Story</h1>
+    <p class="lead text-secondary mb-0">Bringing authentic JDM culture to Middle Tennessee.</p>
   </div>
 </section>
 
 <section class="py-5">
   <div class="container">
     <div class="row g-5 align-items-center">
-      <div class="col-lg-7 slide-up">
-        <h2 class="h3 fw-bold mb-4">
-          THE NEMESIS <span class="gradient-text">LEGACY</span>
-        </h2>
+      <div class="col-lg-7">
+        <h2 class="h3 fw-bold mb-3">The Nemesis Legacy</h2>
         <div class="text-secondary">
-          <p>
-            Nemesis Imports was founded in 2025 by Cason Pewitt, a United States Marine Corps veteran with a deep passion for motorsports and Japanese automotive culture. After serving overseas in Japan, stationed in the smaller city of Iwakuni in Yamaguchi prefecture, Cason discovered the incredible world of JDM performance and community.
-          </p>
-          <p>
-            During his time in Japan, Cason developed meaningful relationships with local car enthusiasts, people deeply connected to FDJ (Formula Drift Japan), and performance shops that were bringing the absolute best out of these iconic vehicles. This immersion into authentic Japanese car culture opened his eyes to the engineering prestige and racing heritage that defines JDM.
-          </p>
-          <p>
-            Based in Franklin, Tennessee, Nemesis Imports was created to bring the growing Middle Tennessee and surrounding areas a trustworthy source for all things JDM. Our mission is to stand above other import companies by making these newly US-legal cars easily accessible to anyone drawn to these iconic vehicles and the community that surrounds them.
-          </p>
+          <p>Nemesis Imports was founded in 2025 by Cason Pewitt, a United States Marine Corps veteran with a deep passion for motorsports and Japanese automotive culture. After serving overseas in Japan, stationed in the smaller city of Iwakuni in Yamaguchi prefecture, Cason discovered the incredible world of JDM performance and community.</p>
+          
+          <p>During his time in Japan, Cason developed meaningful relationships with local car enthusiasts, people deeply connected to FDJ (Formula Drift Japan), and performance shops that were bringing the absolute best out of these iconic vehicles. This immersion into authentic Japanese car culture opened his eyes to the engineering prestige and racing heritage that defines JDM.</p>
+          
+          <p class="mb-0">Based in Franklin, Tennessee, Nemesis Imports was created to bring the growing Middle Tennessee and surrounding areas a trustworthy source for all things JDM. Our mission is to stand above other import companies by making these newly US-legal cars easily accessible to anyone drawn to these iconic vehicles and the community that surrounds them.</p>
+        </div>
+        
+        <div class="mt-4">
+          <span class="badge bg-success me-2">
+            <i class="bi bi-flag-fill me-1"></i>Veteran Owned
+          </span>
+          <span class="badge bg-primary">
+            <i class="bi bi-geo-alt-fill me-1"></i>Franklin, TN
+          </span>
         </div>
       </div>
-
-      <div class="col-lg-5 slide-up stagger-2">
-        <div class="ratio ratio-1x1 rounded experience-visual">
+ 
+      <div class="col-lg-5">
+        <div class="ratio ratio-1x1 rounded" style="background: linear-gradient(135deg, #2563eb, #22c55e);">
           <div class="d-flex align-items-center justify-content-center text-black">
             <div class="text-center">
-              <div class="display-3 fw-bold mb-2">2025</div>
-              <div class="fs-5 fw-semibold">Founded in Franklin, TN</div>
-              <div class="mt-3">
-                <i class="bi bi-shield-fill fs-1"></i>
+              <div class="mb-3">
+                <i class="bi bi-flag fs-1"></i>
+              </div>
+              <div class="display-4 fw-bold mb-2">2025</div>
+              <div class="fw-semibold mb-2">Founded in Franklin, TN</div>
+              <small class="d-block mt-2 opacity-75">By USMC Veteran Cason Pewitt</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="border-secondary my-5">
+
+    <div class="text-center mb-4">
+      <h2 class="h3 fw-bold">Why Choose Nemesis?</h2>
+      <p class="text-secondary">What sets us apart from other importers.</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+      <div class="col">
+        <div class="card bg-dark border-secondary h-100 p-3 text-center feature-card">
+          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto icon-circle">
+            <i class="bi bi-patch-check text-black fs-4"></i>
+          </div>
+          <div class="fw-semibold mb-1">100% Legal</div>
+          <div class="text-secondary small">Full EPA, DOT, and state compliance on every vehicle.</div>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="card bg-dark border-secondary h-100 p-3 text-center feature-card">
+          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto icon-circle">
+            <i class="bi bi-file-earmark-text text-black fs-4"></i>
+          </div>
+          <div class="fw-semibold mb-1">Full Documentation</div>
+          <div class="text-secondary small">Import papers, auction sheets, and service history included.</div>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="card bg-dark border-secondary h-100 p-3 text-center feature-card">
+          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto icon-circle">
+            <i class="bi bi-globe text-black fs-4"></i>
+          </div>
+          <div class="fw-semibold mb-1">Direct From Japan</div>
+          <div class="text-secondary small">Established relationships with auctions and shops.</div>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="card bg-dark border-secondary h-100 p-3 text-center feature-card">
+          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto icon-circle">
+            <i class="bi bi-heart text-black fs-4"></i>
+          </div>
+          <div class="fw-semibold mb-1">Passion-Driven</div>
+          <div class="text-secondary small">We're enthusiasts first. Your dream car matters to us.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="card bg-dark border-primary p-4">
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <h3 class="h5 mb-2">Our Commitment</h3>
+              <p class="text-secondary mb-lg-0">
+                From Cason's service in the Marine Corps to his time in Japan's car culture, 
+                integrity and excellence drive everything we do. We're not just importing cars—we're 
+                bringing authentic JDM culture to Tennessee with the honor and dedication of military service.
+              </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <div class="d-flex justify-content-lg-end align-items-center gap-3 mt-3 mt-lg-0">
+                <div>
+                  <small class="text-secondary d-block">Est.</small>
+                  <span class="fs-4 fw-bold text-primary">2025</span>
+                </div>
+                <div class="vr mx-2"></div>
+                <div>
+                  <small class="text-secondary d-block">Location</small>
+                  <span class="fs-6 fw-bold text-success">Franklin, TN</span>
+                </div>
               </div>
             </div>
           </div>
@@ -241,168 +148,17 @@
   </div>
 </section>
 
-
-<section class="py-5 mission-section">
-  <div class="container">
-    <div class="text-center mb-5 fade-in">
-      <h2 class="h3 fw-bold mb-4">OUR <span class="gradient-text">MISSION</span></h2>
-      <p class="text-secondary lead mx-auto" style="max-width: 900px;">
-        The JDM community is incredibly diverse - ranging from wealthy collectors with limited edition models all the way to grassroots drifting enthusiasts. We want to bring that wide range of appreciation to this area of the United States.
-      </p>
-    </div>
-
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4">
-      <div class="col slide-up stagger-1">
-        <div class="card bg-dark border-secondary h-100 p-4 text-center value-card">
-          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto value-icon position-relative"
-               style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
-            <i class="bi bi-shield-fill text-black fs-4"></i>
-          </div>
-          <h5 class="fw-semibold mb-2">Military Values</h5>
-          <p class="text-secondary small">Built on the foundation of honor, integrity, and service from Marine Corps experience.</p>
-        </div>
-      </div>
-
-      <div class="col slide-up stagger-2">
-        <div class="card bg-dark border-secondary h-100 p-4 text-center value-card">
-          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto value-icon position-relative"
-               style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
-            <i class="bi bi-award text-black fs-4"></i>
-          </div>
-          <h5 class="fw-semibold mb-2">Authentic JDM</h5>
-          <p class="text-secondary small">Real connections with Japan's car culture, not just imported vehicles.</p>
-        </div>
-      </div>
-
-      <div class="col slide-up stagger-3">
-        <div class="card bg-dark border-secondary h-100 p-4 text-center value-card">
-          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto value-icon position-relative"
-               style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
-            <i class="bi bi-people-fill text-black fs-4"></i>
-          </div>
-          <h5 class="fw-semibold mb-2">Community First</h5>
-          <p class="text-secondary small">Serving everyone from collectors to grassroots enthusiasts with equal passion.</p>
-        </div>
-      </div>
-
-      <div class="col slide-up stagger-4">
-        <div class="card bg-dark border-secondary h-100 p-4 text-center value-card">
-          <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto value-icon position-relative"
-               style="width:64px;height:64px;background:linear-gradient(90deg,#60a5fa,#22c55e);">
-            <i class="bi bi-globe text-black fs-4"></i>
-          </div>
-          <h5 class="fw-semibold mb-2">Tennessee Roots</h5>
-          <p class="text-secondary small">Bringing Japanese automotive excellence to Middle Tennessee and beyond.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="py-5 bg-dark border-top border-bottom border-secondary" style="padding: 80px 0;">
-  <div class="container">
-    <div class="text-center mb-5 fade-in">
-      <h2 class="h3 fw-bold mb-3">
-        IWAKUNI <span class="gradient-text">CONNECTION</span>
-      </h2>
-      <p class="text-secondary mx-auto" style="max-width: 750px;">
-        The relationships and knowledge gained during military service in Japan<br>
-        form the foundation of everything we do.
-      </p>
-    </div>
-
-    <div class="row g-4">
-
-      <div class="col-md-6 slide-up stagger-1">
-        <div class="p-4 experience-card">
-          <h4 class="h5 mb-3">
-            <i class="bi bi-people text-primary me-2"></i>
-            Local Enthusiasts
-          </h4>
-          <p class="text-secondary mb-0">
-            Built genuine relationships with Japanese car enthusiasts who live and breathe JDM culture every day. These connections provide insider knowledge and access to the best vehicles.
-          </p>
-        </div>
-      </div>
-
-      <div class="col-md-6 slide-up stagger-2">
-        <div class="p-4 experience-card">
-          <h4 class="h5 mb-3">
-            <i class="bi bi-trophy text-primary me-2"></i>
-            Formula Drift Japan
-          </h4>
-          <p class="text-secondary mb-0">
-            Through connections with people deeply tied to FDJ, we understand the performance capabilities and modifications that make these cars legendary on the track.
-          </p>
-        </div>
-      </div>
-
-      <div class="col-md-6 slide-up stagger-3">
-        <div class="p-4 experience-card">
-          <h4 class="h5 mb-3">
-            <i class="bi bi-wrench text-primary me-2"></i>
-            Performance Shops
-          </h4>
-          <p class="text-secondary mb-0">
-            Partnerships with Japanese performance shops ensure we understand the full potential of each vehicle and can guide customers toward the perfect build.
-          </p>
-        </div>
-      </div>
-
-      <div class="col-md-6 slide-up stagger-4">
-        <div class="p-4 experience-card">
-          <h4 class="h5 mb-3">
-            <i class="bi bi-translate text-primary me-2"></i>
-            Cultural Understanding
-          </h4>
-          <p class="text-secondary mb-0">
-            Living in Iwakuni provided deep insight into the respect and care Japanese owners have for their vehicles - a standard we bring to every import.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="py-5">
-  <div class="container">
-    <div class="mx-auto text-center fade-in" style="max-width: 800px;">
-      <div class="mb-4">
-        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-             style="width:96px;height:96px;background:linear-gradient(135deg,#60a5fa,#22c55e);">
-          <span class="fs-3 fw-bold text-black">CP</span>
-        </div>
-        <h3 class="h4 fw-bold mb-1">Cason Pewitt</h3>
-        <p class="text-secondary">Founder & Marine Veteran</p>
-      </div>
-
-      <div class="founder-quote">
-        <blockquote class="fs-5 fst-italic text-secondary mb-0">
-          "My goal is simple: to make the incredible world of JDM accessible to everyone who feels that same passion I discovered in Japan. Whether you're a collector seeking a pristine example or an enthusiast ready to build your dream drift car, Nemesis Imports is here to connect you with the vehicle and community you're looking for."
-        </blockquote>
-      </div>
-    </div>
-  </div>
-</section>
-
-
 <section class="py-5 bg-dark border-top border-secondary">
   <div class="container text-center">
-    <h2 class="h3 mb-3 fade-in">Ready to Find Your Dream <span class="gradient-text">JDM?</span></h2>
-    <p class="text-secondary mb-4 slide-up">
+    <h2 class="h3 mb-3">Ready to Find Your Dream JDM?</h2>
+    <p class="text-secondary mb-4">
       Whether you know exactly what you want or need guidance, we're here to help.
     </p>
-
-    <div class="d-flex justify-content-center gap-3 slide-up" style="animation-delay: 0.2s;">
-      <a class="btn btn-primary position-relative" href="{% url 'contact' %}">
+    <div class="d-flex justify-content-center gap-3">
+      <a class="btn btn-primary" href="{% url 'contact' %}">
         <i class="bi bi-chat-dots me-2"></i>Get in Touch
       </a>
-      <a class="btn btn-outline-light" href="{% url 'inventory' %}">
-        Browse Inventory
-      </a>
+      <a class="btn btn-outline-light" href="{% url 'inventory' %}">Browse Inventory</a>
     </div>
   </div>
 </section>
